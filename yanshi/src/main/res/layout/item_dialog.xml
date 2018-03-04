@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="180dp">
+  <FrameLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content">
+      <TextView
+          android:layout_centerInParent="true"
+          android:visibility="invisible"
+          android:id="@+id/alert_msg"
+          android:gravity="center"
+          android:text="@string/alert_netconfig"
+          android:textColor="@color/black"
+          android:textSize="16sp"
+          android:layout_width="match_parent"
+          android:layout_height="match_parent" />
+      <LinearLayout
+          android:id="@+id/root_setting"
+          android:visibility="visible"
+          android:orientation="vertical"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content">
+          <LinearLayout
+              android:orientation="horizontal"
+              android:layout_width="match_parent"
+              android:layout_height="40dp">
+              <TextView
+                  android:layout_weight="1"
+                  android:textSize="16sp"
+                  android:gravity="center_vertical"
+                  android:text="SSID"
+                  android:textColor="@color/black"
+                  android:layout_width="match_parent"
+                  android:layout_height="40dp" />
+              <TextView
+                  android:id="@+id/ssid"
+                  android:layout_weight="1"
+                  android:textSize="16sp"
+                  android:gravity="center_vertical"
+                  android:text="1-11-1"
+                  android:textColor="@color/black"
+                  android:layout_width="match_parent"
+                  android:layout_height="40dp" />
+          </LinearLayout>
+          <LinearLayout
+              android:orientation="horizontal"
+              android:layout_width="match_parent"
+              android:layout_height="40dp">
+              <TextView
+                  android:layout_weight="1"
+                  android:textSize="16sp"
+                  android:gravity="center_vertical"
+                  android:text="Password"
+                  android:textColor="@color/black"
+                  android:layout_width="match_parent"
+                  android:layout_height="40dp" />
+              <EditText
+                  android:id="@+id/password"
+                  android:layout_weight="1"
+                  android:textSize="16sp"
+                  android:gravity="center_vertical"
+                  android:text=""
+                  android:textColor="@color/black"
+                  android:layout_width="match_parent"
+                  android:layout_height="40dp" />
+          </LinearLayout>
+          <LinearLayout
+              android:visibility="gone"
+              android:orientation="horizontal"
+              android:layout_width="match_parent"
+              android:layout_height="40dp">
+              <TextView
+                  android:layout_weight="1"
+                  android:textSize="16sp"
+                  android:gravity="center_vertical"
+                  android:text="Gateway IP Address"
+                  android:textColor="@color/black"
+                  android:layout_width="match_parent"
+                  android:layout_height="40dp" />
+              <TextView
+                  android:id="@+id/gateway"
+                  android:layout_weight="1"
+                  android:textSize="16sp"
+                  android:gravity="center_vertical"
+                  android:text="192.168.1.1"
+                  android:textColor="@color/black"
+                  android:layout_width="match_parent"
+                  android:layout_height="40dp" />
+          </LinearLayout>
+
+          <LinearLayout
+              android:visibility="gone"
+              android:orientation="horizontal"
+              android:layout_width="match_parent"
+              android:layout_height="40dp">
+              <TextView
+                  android:layout_weight="1"
+                  android:textSize="16sp"
+                  android:gravity="center_vertical"
+                  android:text="Extra Info"
+                  android:textColor="@color/black"
+                  android:layout_width="match_parent"
+                  android:layout_height="40dp" />
+              <EditText
+                  android:id="@+id/extrainfo"
+                  android:layout_weight="1"
+                  android:textSize="16sp"
+                  android:gravity="center_vertical"
+                  android:text="EWM"
+                  android:textColor="@color/black"
+                  android:layout_width="match_parent"
+                  android:layout_height="40dp" />
+          </LinearLayout>
+
+          <LinearLayout
+              android:visibility="gone"
+              android:orientation="horizontal"
+              android:layout_width="match_parent"
+              android:layout_height="40dp">
+              <TextView
+                  android:layout_weight="1"
+                  android:textSize="16sp"
+                  android:gravity="center_vertical"
+                  android:text="Interval"
+                  android:textColor="@color/black"
+                  android:layout_width="match_parent"
+                  android:layout_height="40dp" />
+              <EditText
+                  android:id="@+id/interval"
+                  android:layout_weight="1"
+                  android:textSize="16sp"
+                  android:gravity="center_vertical"
+                  android:text="20"
+                  android:textColor="@color/black"
+                  android:layout_width="match_parent"
+                  android:layout_height="40dp" />
+          </LinearLayout>
+
+      </LinearLayout>
+  </FrameLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <Button
+            android:layout_marginTop="16dp"
+            android:textColor="@color/white"
+            android:background="@color/colorPrimary"
+            android:id="@+id/bt_start"
+            android:text="开始"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="16dp">
+
+        </View>
+    </LinearLayout>
+</LinearLayout>

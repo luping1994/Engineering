@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.example.focus.androidnote.popupwindow.PopupWindowActivity">
+
+    <item
+        android:id="@+id/base_setting"
+        android:orderInCategory="100"
+        android:title="@string/base_setting"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/advance_setting"
+        android:orderInCategory="100"
+        android:title="@string/advance_setting"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/add2local"
+        android:orderInCategory="100"
+        android:title="@string/add2local" />
+    <item
+        android:id="@+id/control"
+        android:orderInCategory="100"
+        android:title="@string/control"
+        app:showAsAction="never">
+
+        <menu>
+            <item
+                android:id="@+id/control_10"
+                android:orderInCategory="100"
+                android:title="十通道"
+                app:showAsAction="never" />
+            <item
+                android:id="@+id/control_6"
+                android:orderInCategory="100"
+                android:title="六通道"
+                app:showAsAction="never" />
+            <item
+                android:id="@+id/control_sensor"
+                android:orderInCategory="100"
+                android:title="第六感"
+                app:showAsAction="never" />
+        </menu>
+
+    </item>
+</menu>

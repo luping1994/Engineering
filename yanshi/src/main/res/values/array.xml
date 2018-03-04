@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="type">
+        <item>STSLC-10</item>
+        <item>STSLC-6</item>
+        <item>sensus</item>
+        <item>STSLC-2/3</item>
+    </string-array>
+</resources>

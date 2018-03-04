@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">StLink</string>
+    <string name="txt_auto_link">一键配网</string>
+</resources>

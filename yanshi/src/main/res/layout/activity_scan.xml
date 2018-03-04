@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/secondary_text"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="#ffffff"
+        android:elevation="3dp"
+        app:titleTextAppearance="@style/Appbar_apperance"
+        android:fitsSystemWindows="true"
+        app:navigationIcon="@drawable/ic_back_arrow"
+
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+        app:theme="@style/ThemeOverlay.AppCompat.ActionBar">
+
+    </android.support.v7.widget.Toolbar>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="160dp"
+        android:background="#FFFFFF">
+        <RelativeLayout
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentBottom="true"
+            android:layout_width="144dp"
+            android:layout_height="144dp">
+            <ImageView
+                android:padding="8dp"
+                android:id="@+id/imageView"
+                android:layout_width="144dp"
+                android:layout_height="144dp"
+                android:src="@drawable/icon_add_device_scan_circle2" />
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true">
+
+                <TextView
+                    android:id="@+id/count"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="0"
+                    android:textColor="@color/black"
+                    android:textSize="35sp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/count"
+                    android:gravity="center"
+                    android:text="设备数"
+                    android:textSize="12sp" />
+            </RelativeLayout>
+        </RelativeLayout>
+
+
+
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/tx_state"
+        android:layout_width="match_parent"
+        android:layout_height="24dp"
+        android:background="#f7f7f7"
+        android:gravity="center"
+        android:text="@string/scaning"
+        android:textColor="@color/black"
+        android:textSize="12sp" />
+
+    <RelativeLayout
+        android:background="#ffffff"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin">
+
+        <android.support.v7.widget.RecyclerView
+            android:layout_marginBottom="64dp"
+            android:id="@+id/recyclerview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone">
+
+        </android.support.v7.widget.RecyclerView>
+
+        <RelativeLayout
+            android:id="@+id/rl_noDevice"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="176dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:textColor="@color/secondary_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="16dp"
+                    android:layout_marginLeft="32dp"
+                    android:layout_marginRight="43dp"
+                    android:layout_marginTop="64dp"
+                    android:text="@string/tips_please_check"
+                    android:textSize="12sp" />
+
+                <TextView
+                    style="@style/ScanActivity_NoDevice_tips_textview"
+
+                    android:text="@string/tips_check_power" />
+
+                <LinearLayout
+                    style="@style/ScanActivity_NoDevice_tips_textview"
+                    android:layout_width="match_parent"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:textColor="@color/secondary_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="16dp"
+                        android:text="@string/tips_is_network_vailable"
+                        android:textSize="12sp" />
+
+                    <TextView
+                        android:id="@+id/choose_wlan"
+                        android:layout_width="match_parent"
+                        android:layout_height="16dp"
+                        android:text="@string/tips_choose_wlan"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="12sp" />
+                </LinearLayout>
+
+                <TextView
+                    style="@style/ScanActivity_NoDevice_tips_textview"
+                    android:text="@string/tips_reset_devices" />
+            </LinearLayout>
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="64dp"
+            android:layout_alignParentBottom="true">
+
+            <Button
+                android:id="@+id/re_scan"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginRight="8dp"
+                android:layout_weight="1"
+                android:background="@drawable/ic_button_bg"
+                android:text="@string/tips_scan_aglin"
+                android:textColor="@color/colorPrimary"
+                android:textSize="16sp" />
+
+            <Button
+                android:textSize="16sp"
+                android:id="@+id/hand_add"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="8dp"
+                android:layout_weight="1"
+                android:background="@drawable/ic_button_bg"
+                android:text="@string/tips_add_handler"
+                android:textColor="@color/colorPrimary" />
+        </LinearLayout>
+    </RelativeLayout>
+</LinearLayout>

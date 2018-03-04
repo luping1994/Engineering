@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="net.suntrans.suntransyanshi">
+    <uses-permission android:name="android.permission.INTERNET"></uses-permission>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <uses-permission android:name="android.permission.VIBRATE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_LOGS" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-permission android:name="android.permission.CHANGE_WIFI_MULTICAST_STATE"/>
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity android:name=".MainActivity">
+
+        </activity>
+        <activity android:name=".ScanDevices_Activity" android:theme="@style/AppTheme"/>
+        <activity android:name=".sensus.Sixsensor_activity" />
+        <activity android:name=".slslc10.St_slc_10_activity" />
+        <activity android:name=".activity.Welcome_Activity" >
+
+        </activity>
+        <activity android:name=".activity.LoginActivity" android:theme="@style/AppTheme.lightStatusbar">
+
+        </activity>
+        <activity android:name=".stslc6.Stslc6_activity" />
+        <activity android:name=".activity.AddDevicesActivity" android:theme="@style/AppTheme.Transparent"/>
+        <activity android:name=".stslc6.Stslc6_control_activity2" />
+        <activity android:name=".sensus.Sixsensor_detail_activity" />
+        <activity android:name=".slslc10.St_slc_10list_activity" />
+        <activity android:name=".activity.ApListActivity" />
+        <activity android:name=".activity.EWM_Config_Activity1" android:theme="@style/AppTheme.Transparent" />
+        <activity android:name=".activity.AddDevicesActivity2" android:theme="@style/AppTheme.Transparent"/>
+        <activity android:name=".activity.AdvancedSetting_Activity" />
+
+        <service android:name=".tcp.TcpService" />
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="net.suntrans.suntransyanshi.fileProvider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/provider_paths" />
+        </provider>
+        <activity
+            android:name="com.tencent.bugly.beta.ui.BetaActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize|locale"
+            android:theme="@android:style/Theme.Translucent" />
+    </application>
+
+</manifest>

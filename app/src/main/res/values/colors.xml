@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#ffffff</color>
+    <color name="colorPrimaryDark">#ffffff</color>
+    <color name="colorAccent">#FF4081</color>
+    <color name="white">#ffffff</color>
+    <color name="black">#000000</color>
+    <color name="nav_divider">#eeeeee</color>
+
+    <color name="secondtextcolor">#c3c3c3</color>
+    <color name="item_press_false">#fafafa</color>
+    <color name="item_press_true">#f2f3f5</color>
+    <color name="item_press_true_selector">#c9c9c9</color>
+    <color name="ripper_color">#c9c9c9</color>
+</resources>

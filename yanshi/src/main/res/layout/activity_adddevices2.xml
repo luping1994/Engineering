@@ -1,0 +1,279 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#80000000"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical"
+    android:paddingBottom="72dp"
+    android:paddingLeft="32dp"
+    android:paddingRight="32dp"
+    android:paddingTop="72dp">
+
+  <LinearLayout
+      android:orientation="vertical"
+      android:background="@drawable/adddevice_bg"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent">
+      <android.support.v4.widget.NestedScrollView
+          android:layout_weight="1"
+          android:layout_width="match_parent"
+          android:layout_height="0dp"
+          android:paddingLeft="@dimen/activity_horizontal_margin"
+          android:paddingRight="@dimen/activity_horizontal_margin"
+          android:layout_alignParentTop="true"
+          android:layout_alignParentLeft="true"
+          android:layout_alignParentStart="true">
+
+          <LinearLayout
+              android:paddingBottom="@dimen/activity_horizontal_margin"
+              android:paddingTop="@dimen/activity_horizontal_margin"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
+
+              <LinearLayout
+                  android:layout_width="match_parent"
+                  android:layout_height="45dp">
+
+                  <TextView
+                      android:id="@+id/textView2"
+                      android:layout_width="wrap_content"
+                      android:layout_height="match_parent"
+                      android:gravity="center"
+                      android:text="@string/name"
+                      android:textColor="@color/black"
+                      android:textSize="14sp" />
+
+                  <EditText
+                      android:id="@+id/name"
+                      android:layout_width="match_parent"
+                      android:layout_height="match_parent"
+                      android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                      android:hint="@string/tips_rditname"
+                      android:textSize="14sp"/>
+              </LinearLayout>
+              <LinearLayout
+                  android:layout_width="match_parent"
+                  android:layout_height="45dp">
+
+                  <TextView
+                      android:layout_width="wrap_content"
+                      android:layout_height="match_parent"
+                      android:gravity="center"
+                      android:text="@string/type"
+                      android:textColor="@color/black"
+                      android:textSize="14sp" />
+
+                  <Spinner
+                      android:id="@+id/type"
+                      android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                      android:entries="@array/type"
+                      android:layout_width="match_parent"
+                      android:layout_height="match_parent"></Spinner>
+              </LinearLayout>
+              <LinearLayout
+                  android:layout_width="match_parent"
+                  android:layout_height="45dp">
+
+                  <TextView
+                      android:layout_width="wrap_content"
+                      android:layout_height="match_parent"
+                      android:gravity="center"
+                      android:text="@string/rsaddr"
+                      android:textColor="@color/black"
+                      android:textSize="14sp" />
+
+                  <EditText
+                      android:id="@+id/RSAddr"
+                      android:layout_width="match_parent"
+                      android:layout_height="match_parent"
+                      android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                      android:hint="@string/tips_editaddr"
+                      android:textSize="14sp" />
+              </LinearLayout>
+
+              <View
+                  android:layout_width="match_parent"
+                  android:layout_height="1px"
+                  android:background="@color/secondary_text" />
+
+              <LinearLayout
+                  android:layout_width="match_parent"
+                  android:layout_height="45dp">
+
+                  <TextView
+                      android:layout_width="wrap_content"
+                      android:layout_height="match_parent"
+                      android:gravity="center"
+                      android:text="@string/zhilianiip"
+                      android:textColor="@color/black"
+                      android:textSize="14sp" />
+
+                  <EditText
+                      android:id="@+id/zhilianip"
+                      android:layout_width="match_parent"
+                      android:layout_height="match_parent"
+                      android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                      android:text="10.11.12.1"
+                      android:textSize="14sp" />
+              </LinearLayout>
+
+              <LinearLayout
+                  android:layout_width="match_parent"
+                  android:layout_height="45dp">
+
+                  <TextView
+                      android:layout_width="wrap_content"
+                      android:layout_height="match_parent"
+                      android:gravity="center|left"
+                      android:text="@string/zhilianport"
+                      android:textColor="@color/black"
+                      android:textSize="14sp" />
+
+                  <EditText
+                      android:id="@+id/zhilianport"
+                      android:layout_width="match_parent"
+                      android:layout_height="match_parent"
+                      android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                      android:text="2000"
+                      android:textSize="14sp" />
+              </LinearLayout>
+
+              <View
+                  android:layout_width="match_parent"
+                  android:layout_height="1px"
+                  android:background="@color/secondary_text" />
+
+              <LinearLayout
+                  android:layout_width="match_parent"
+                  android:layout_height="45dp">
+
+                  <TextView
+                      android:layout_width="wrap_content"
+                      android:layout_height="match_parent"
+                      android:gravity="center"
+                      android:text="@string/waiwangip"
+                      android:textColor="@color/black"
+                      android:textSize="14sp" />
+
+                  <EditText
+                      android:id="@+id/waiwangip"
+                      android:layout_width="match_parent"
+                      android:layout_height="match_parent"
+                      android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                      android:text="ys.suntrans.net"
+                      android:textSize="14sp" />
+              </LinearLayout>
+
+              <LinearLayout
+                  android:layout_width="match_parent"
+                  android:layout_height="45dp">
+
+                  <TextView
+                      android:layout_width="wrap_content"
+                      android:layout_height="match_parent"
+                      android:gravity="center|left"
+                      android:text="@string/waiwangport"
+                      android:textColor="@color/black"
+                      android:textSize="14sp" />
+
+                  <EditText
+                      android:id="@+id/waiwangport"
+                      android:layout_width="match_parent"
+                      android:layout_height="match_parent"
+                      android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                      android:text="8101"
+                      android:textSize="14sp" />
+              </LinearLayout>
+
+              <View
+                  android:layout_width="match_parent"
+                  android:layout_height="1px"
+                  android:background="@color/secondary_text" />
+
+              <LinearLayout
+                  android:layout_width="match_parent"
+                  android:layout_height="45dp">
+
+                  <TextView
+                      android:layout_width="wrap_content"
+                      android:layout_height="match_parent"
+                      android:gravity="center"
+                      android:text="@string/bendiip"
+                      android:textColor="@color/black"
+                      android:textSize="14sp" />
+
+                  <EditText
+                      android:id="@+id/bendiip"
+                      android:layout_width="match_parent"
+                      android:layout_height="match_parent"
+                      android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                      android:text="192.168.1.1"
+                      android:textSize="14sp" />
+              </LinearLayout>
+
+              <LinearLayout
+                  android:layout_width="match_parent"
+                  android:layout_height="45dp">
+
+                  <TextView
+                      android:layout_width="wrap_content"
+                      android:layout_height="match_parent"
+                      android:gravity="center|left"
+                      android:text="@string/bendiport"
+                      android:textColor="@color/black"
+                      android:textSize="14sp" />
+
+                  <EditText
+                      android:id="@+id/bendiport"
+                      android:layout_width="match_parent"
+                      android:layout_height="match_parent"
+                      android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                      android:text="8000"
+                      android:textSize="14sp" />
+              </LinearLayout>
+
+              <View
+                  android:layout_width="match_parent"
+                  android:layout_height="1px"
+                  android:background="@color/secondary_text" />
+
+          </LinearLayout>
+      </android.support.v4.widget.NestedScrollView>
+
+      <View
+          android:layout_width="match_parent"
+          android:layout_height="1px"
+          android:background="@color/secondary_text" />
+      <LinearLayout
+            android:gravity="center_vertical"
+          android:background="@color/white"
+          android:layout_width="match_parent"
+          android:layout_height="50dp"
+          android:orientation="horizontal">
+
+          <Button
+              android:layout_marginRight="4dp"
+              android:id="@+id/qvxiao"
+              android:layout_width="0dp"
+              android:layout_height="40dp"
+              android:layout_marginLeft="8dp"
+              android:layout_weight="1"
+              android:background="@drawable/ic_button_bg"
+              android:text="@string/cancel"
+              android:textColor="@color/colorPrimary" />
+
+          <Button
+              android:layout_marginLeft="4dp"
+              android:id="@+id/add"
+              android:layout_width="0dp"
+              android:layout_height="40dp"
+              android:layout_marginRight="8dp"
+              android:layout_weight="1"
+              android:background="@drawable/ic_button_bg"
+              android:text="@string/add"
+              android:textColor="@color/colorPrimary" />
+      </LinearLayout>
+  </LinearLayout>
+</RelativeLayout>
