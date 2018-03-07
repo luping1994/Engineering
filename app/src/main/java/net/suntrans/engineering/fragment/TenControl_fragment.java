@@ -340,64 +340,37 @@ public class TenControl_fragment extends Fragment implements TcpHelper.OnReceive
             }
         }, 2000);
     }
-    private byte[] bits = {(byte) 0x01, (byte) 0x02, (byte) 0x04, (byte) 0x08, (byte) 0x10, (byte) 0x20, (byte) 0x40, (byte) 0x80,(byte)0x10};     //从1到8只有一位是1，用于按位与计算，获取某一位的值
+    byte[] bits = {(byte) 0x01, (byte) 0x02, (byte) 0x04, (byte) 0x08, (byte) 0x10, (byte) 0x20, (byte) 0x40, (byte) 0x80};     //从1到8只有一位是1，用于按位与计算，获取某一位的值
 
     private void parseSwitchData(String s) {
-        //aa 68 43 00 01 00 00 00 02 9700 3f000000 cf27 0d0a  开关总状态
-        //aa 68 43 00 27 00 00 00 02 9700 00000000 767b 0d0a
-        //AA 68 43 00 01 00 00 00 04 D200 04000400 A856 0D0A  单个
-        //aa 68 41 00 dd 0b 00 00 02 3200 bf030000 ef26 0d0a
         if (s.length()<16)
             return;
-//        if (((Stslc6_control_activity2)getActivity()).flag.equals("bendi")){
-//
-//        }else {
-//            if (s.substring(0,16).equals("aa684300"+addrs.get(0))){
-//                return;
-//            }
-//        }
-//aa68 4100 1a02 0000 0232 00 00000000 0caa 0d0a
-        if (s.substring(16, 18).equals("02") && s.substring(18, 22).equals("3200")) {
-            //总开关状态
-            String s1 = s.substring(22, 24);
-            String[] states = {"0", "0", "0", "0", "0", "0","0","0","0","0"};   //10个通道的状态，state[0]对应1通道
-            byte[] a = Converts.HexString2Bytes(s1);
-            for (int i = 0; i < 10; i++) {
-                states[i] = ((a[0] & bits[i]) == bits[i]) ? "1" : "0";
-            }
-            for (int i = 0; i < datas.size(); i++) {
-                int channel = Integer.valueOf(datas.get(i).getChannel());
-                if (channel != 0) {
-                    datas.get(i).setState(states[channel - 1]);
-                }
-            }
-        }else if (s.substring(16, 18).equals("05") && s.substring(18, 22).equals("d200")) {
-            System.out.println("单个通道发生状态改变了");
-            //     aa68 4300 01000000 04 d200 0100 0100 abca 0d0a
-            //     aa68 4300 27000000 05 9700 0100 0100 00d7 0d0a
-            String s2 = s.substring(22, 24);
-            byte[] a = Converts.HexString2Bytes(s2);
-            int channel =-1;
-            int state;
-            for (int i=0;i<bits.length;i++){
-                if ((bits[i]&a[0])==bits[i]){
-                    channel = i+1;
-                }
-            }
-            System.out.println("通道号="+channel);
-            String s3 = s.substring(26,28);
-            state = s3.equals(s2)?1:0;
-            System.out.println("状态="+state);
 
-            if (channel!=-1){
-                for (int i = 0; i < datas.size(); i++) {
-
-                    if (datas.get(i).getChannel().equals(String.valueOf(channel))) {
-                        datas.get(i).setState(state == 1 ? "1" : "0");
-                    }
-                }
-            }
-
+        if (!s.substring(4,8).equals("4100")){
+            return;
         }
+
+        //总开关状态
+        s = s.replace(" ","");
+        String s1 = s.substring(22, 26);
+        s1 = s1.substring(2,4)+s1.substring(0,2);
+        String[] states = {"0", "0", "0", "0", "0", "0","0","0","0","0"};   //10个通道的状态，state[0]对应1通道
+        byte[] a = Converts.HexString2Bytes(s1);
+        for (int i = 0; i < 10; i++) {
+            if (i<8){
+                states[i] = ((a[1] & bits[i]) == bits[i]) ? "1" : "0";
+            }else {
+                states[i] = ((a[0] & bits[i-8]) == bits[i-8]) ? "1" : "0";
+            }
+//            System.out.println("通道"+(i+1)+":"+states[i]+",");
+        }
+        for (int i = 0; i < datas.size(); i++) {
+            int channel = Integer.valueOf(datas.get(i).getChannel());
+            if (channel != 0) {
+                datas.get(i).setState(states[channel - 1]);
+            }
+        }
+        adapter.notifyDataSetChanged();
+
     }
 }

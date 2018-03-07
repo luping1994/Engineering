@@ -30,7 +30,7 @@ open class BasedActivity : AppCompatActivity() {
             val statusBarFix = findViewById<View>(R.id.statusBarFix)
             val statusBarHeight = StatusBarCompat.getStatusBarHeight(this.applicationContext)
             if (statusBarFix != null)
-                statusBarFix!!.layoutParams.height = statusBarHeight
+                statusBarFix.layoutParams.height = statusBarHeight
         }
     }
 

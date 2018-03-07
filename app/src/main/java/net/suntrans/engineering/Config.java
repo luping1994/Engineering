@@ -11,4 +11,10 @@ public class Config {
     public static String ST_SLC_6="ST-SLC-6";
     public static String ST_SLC_3_2="ST-SLC-6";
     public static String SENSUS="Sensus";
+
+    public static String TYPE_SLC_10 = "4100";
+    public static String TYPE_SLC_6 = "4300";
+    public static String TYPE_SENSUS = "6300";
+
+    public static String FILE_PROVIDER = "net.suntrans.engineering.fileProvider";
 }

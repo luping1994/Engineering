@@ -49,18 +49,20 @@ public class SixControl_fragment extends Fragment implements TcpHelper.OnReceive
     protected SwipeRefreshLayout refreshLayout;
     protected MyAdapter adapter;
     private List<String> addrs;
+
+
     private TcpHelper helper;
 
     private int port;
     private String ip;
     private ProgressDialog connectDialog;
 
-    public static SixControl_fragment newInstance(ArrayList<SixSwitchItem> datas,String ip,int port) {
+    public static SixControl_fragment newInstance(ArrayList<SixSwitchItem> datas, String ip, int port) {
         SixControl_fragment fragment = new SixControl_fragment();
         Bundle bundle = new Bundle();
-        bundle.putParcelableArrayList("datas",datas);
-        bundle.putString("ip",ip);
-        bundle.putInt("port",port);
+        bundle.putParcelableArrayList("datas", datas);
+        bundle.putString("ip", ip);
+        bundle.putInt("port", port);
         fragment.setArguments(bundle);
         return fragment;
     }
@@ -118,7 +120,7 @@ public class SixControl_fragment extends Fragment implements TcpHelper.OnReceive
 
         ip = getArguments().getString("ip");
         port = getArguments().getInt("port");
-        connectToServer(ip,port);
+        connectToServer(ip, port);
     }
 
 
@@ -141,24 +143,27 @@ public class SixControl_fragment extends Fragment implements TcpHelper.OnReceive
 
     @Override
     public void onReceive(String content) {
-
         LogUtil.i(TAG, content);
-        if (content.equals("与服务器连接失败,重连中...")||content.equals("发送失败")||content.equals("连接中断"))
-        {
+        if (content.equals("与服务器连接失败,重连中...") || content.equals("发送失败") || content.equals("连接中断")) {
             UiUtils.showToast(content);
             return;
         }
         parseSwitchData(content);
-        adapter.notifyDataSetChanged();
-        showSuccessDialog();
         handler.sendEmptyMessage(MSG_STOP_REFRESH);
     }
-    public void disconnect(){
+
+    public void disconnect() {
         dialog.dismiss();
-        if (helper!=null)
+        if (helper != null)
             helper.unRegister();
-        helper=null;
+        helper = null;
     }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+    }
+
     @Override
     public void onConnected() {
         connectDialog.dismiss();
@@ -169,17 +174,17 @@ public class SixControl_fragment extends Fragment implements TcpHelper.OnReceive
             public void run() {
                 getSwitchState();
             }
-        },300);
+        }, 300);
     }
 
     private void getSwitchState() {
         handler.sendEmptyMessage(MSG_START_REFRESH);
-        handler.sendEmptyMessageDelayed(MSG_STOP_REFRESH,2000);
+        handler.sendEmptyMessageDelayed(MSG_STOP_REFRESH, 2000);
         tasks.add(new GetDataTask().execute());
     }
 
 
-    class GetDataTask extends AsyncTask<Void,Void,String>{
+    class GetDataTask extends AsyncTask<Void, Void, String> {
 
         @Override
         protected String doInBackground(Void... params) {
@@ -207,11 +212,11 @@ public class SixControl_fragment extends Fragment implements TcpHelper.OnReceive
 
     private ProgressDialog shutdownDialog;
 
-    class CloseAllTask extends AsyncTask<String,String,String>{
+    class CloseAllTask extends AsyncTask<String, String, String> {
 
         @Override
         protected String doInBackground(String... params) {
-            for (int i=0;i<datas.size();i++){
+            for (int i = 0; i < datas.size(); i++) {
                 helper.binder.sendOrder(datas.get(i).getCloseCmd());
                 publishProgress((i + 1) + "/" + datas.size());
                 try {
@@ -247,8 +252,8 @@ public class SixControl_fragment extends Fragment implements TcpHelper.OnReceive
         @Override
         protected void convert(BaseViewHolder helper, SixSwitchItem item) {
             ImageView imageView = helper.getView(R.id.image);
-            imageView.setImageResource(item.getState().equals("1") ?item.getOpImageId() : item.getCloseImageId());
-            helper.setText(R.id.name,"通道"+item.getChannel()+"");
+            imageView.setImageResource(item.getState().equals("1") ? item.getOpImageId() : item.getCloseImageId());
+            helper.setText(R.id.name, "通道" + item.getChannel() + "");
         }
 
     }
@@ -267,7 +272,7 @@ public class SixControl_fragment extends Fragment implements TcpHelper.OnReceive
         }
     };
 
-    public void connectToServer(String ip,int port) {
+    public void connectToServer(String ip, int port) {
         connectDialog.show();
         helper = new TcpHelper((AppCompatActivity) getActivity(), ip, port, null);
         helper.setOnReceivedListener(this);
@@ -287,7 +292,7 @@ public class SixControl_fragment extends Fragment implements TcpHelper.OnReceive
         super.onDestroyView();
         helper.unRegister();
         handler.removeCallbacksAndMessages(null);
-        for (AsyncTask task:
+        for (AsyncTask task :
                 tasks) {
             task.cancel(true);
         }
@@ -297,7 +302,7 @@ public class SixControl_fragment extends Fragment implements TcpHelper.OnReceive
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId()==R.id.close){
+        if (item.getItemId() == R.id.close) {
             shutdownDialog.show();
             tasks.add(new CloseAllTask().execute());
         }
@@ -343,68 +348,31 @@ public class SixControl_fragment extends Fragment implements TcpHelper.OnReceive
             }
         }, 2000);
     }
+
     private byte[] bits = {(byte) 0x01, (byte) 0x02, (byte) 0x04, (byte) 0x08, (byte) 0x10, (byte) 0x20, (byte) 0x40, (byte) 0x80};     //从1到8只有一位是1，用于按位与计算，获取某一位的值
 
     private void parseSwitchData(String s) {
-        //aa 68 43 00 01 00 00 00 02 9700 3f000000 cf27 0d0a  开关总状态
-        //aa 68 43 00 27 00 00 00 02 9700 00000000 767b 0d0a
-        //AA 68 43 00 01 00 00 00 04 D200 04000400 A856 0D0A  单个
-        //
-        if (s.length()<16)
+
+        if (s.length() < 24)
             return;
-//        if (((Stslc6_control_activity2)getActivity()).flag.equals("bendi")){
-//
-//        }else {
-//            if (s.substring(0,16).equals("aa684300"+addrs.get(0))){
-//                return;
-//            }
-//        }
-
-        if (s.substring(16, 18).equals("02") && s.substring(18, 22).equals("9700")) {
-            //总开关状态
-
-            String s1 = s.substring(22, 24);
-            String[] states = {"0", "0", "0", "0", "0", "0"};   //6个通道的状态，state[0]对应1通道
-            byte[] a = Converts.HexString2Bytes(s1);
-            for (int i = 0; i < 6; i++) {
-                states[i] = ((a[0] & bits[i]) == bits[i]) ? "1" : "0";
-            }
-            for (int i = 0; i < datas.size(); i++) {
-                int channel = Integer.valueOf(datas.get(i).getChannel());
-                if (channel != 0) {
-                    datas.get(i).setState(states[channel - 1]);
-                }
-            }
-        }else if (s.substring(16, 18).equals("04") && s.substring(18, 22).equals("9700")) {
-            System.out.println("单个通道发生状态改变了");
-            //     aa68 4300 01000000 04 d200 0100 0100 abca 0d0a
-            //     aa68 4300 27000000 05 9700 0100 0100 00d7 0d0a
-            //     aa68 4300 27000000 0497003e0002001cf30d0a
-            //     aa68 4300 27000000 049700200002001adb0d0a
-            //     aa68 4300 27000000 0297003c0008007deb0d0a
-            String s2 = s.substring(22, 24);
-            byte[] a = Converts.HexString2Bytes(s2);
-            int channel =-1;
-            int state;
-            for (int i=0;i<bits.length;i++){
-                if ((bits[i]&a[0])==bits[i]){
-                    channel = i+1;
-                }
-            }
-            System.out.println("通道号="+channel);
-            String s3 = s.substring(26,28);
-            state = s3.equals(s2)?1:0;
-            System.out.println("状态="+state);
-
-            if (channel!=-1){
-                for (int i = 0; i < datas.size(); i++) {
-
-                    if (datas.get(i).getChannel().equals(String.valueOf(channel))) {
-                        datas.get(i).setState(state == 1 ? "1" : "0");
-                    }
-                }
-            }
-
+        if (!s.substring(4, 8).equals("4300")) {
+            return;
         }
+        if (!s.substring(s.length()-4,s.length()).equals("0d0a")){
+            return;
+        }
+        String s1 = s.substring(22, 24);
+        String[] states = {"0", "0", "0", "0", "0", "0"};   //6个通道的状态，state[0]对应1通道
+        byte[] a = Converts.HexString2Bytes(s1);
+        for (int i = 0; i < 6; i++) {
+            states[i] = ((a[0] & bits[i]) == bits[i]) ? "1" : "0";
+        }
+        for (int i = 0; i < datas.size(); i++) {
+            int channel = Integer.valueOf(datas.get(i).getChannel());
+            if (channel != 0) {
+                datas.get(i).setState(states[channel - 1]);
+            }
+        }
+        adapter.notifyDataSetChanged();
     }
 }

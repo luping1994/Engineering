@@ -1,4 +1,9 @@
 <resources>
-    <string name="app_name">StLink</string>
+    <string name="app_name">三川配网</string>
     <string name="txt_auto_link">一键配网</string>
+    <string name="ok">确定</string>
+    <string name="cancel">取消</string>
+    <string name="title_choose_project">请选择项目</string>
+    <string name="tips_host_setting">是否将此设备配置%1$s服务器上</string>
+    <string name="tips_setting">正在设置,请稍后...</string>
 </resources>

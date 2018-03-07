@@ -21,7 +21,7 @@ public class TenSwitchItem implements Parcelable {
     private int closeImageId;
 
 
-    private  String zhilianip;
+    private String zhilianip;
     private String zhilianport;
     private String waiwangip;
     private String waiwangport;
@@ -76,6 +76,7 @@ public class TenSwitchItem implements Parcelable {
     }
 
     private String bendiport;
+
     public int getOpImageId() {
         return opImageId;
     }
@@ -91,7 +92,6 @@ public class TenSwitchItem implements Parcelable {
     public void setCloseImageId(int closeImageId) {
         this.closeImageId = closeImageId;
     }
-
 
 
     public int getImgId() {
@@ -116,9 +116,10 @@ public class TenSwitchItem implements Parcelable {
     public void setOpenCmd() {
         String order = "";
         int channeOrder = 0x01;
-        String s = getChannelString(channeOrder<<(Integer.valueOf(getChannel())-1));
-        order = "AB 68 43 00 " + getRSaddr() + "03 7b 00"+s+s;
-        order =getSwitchOrder(order);
+        String s = "";
+        s = getChannelString(channeOrder << (Integer.valueOf(getChannel()) - 1));
+        order = "AB 68 41 00 " + getRSaddr() + "03 7b 00" + s + s;
+        order = getSwitchOrder(order);
         this.openCmd = order;
     }
 
@@ -126,9 +127,9 @@ public class TenSwitchItem implements Parcelable {
     public void setCloseCmd() {
         String order = "";
         int channeOrder = 0x01;
-        String s = getChannelString(channeOrder<<(Integer.valueOf(getChannel())-1));
-        order = "AB 68 43 00 " + getRSaddr() + "03 7b 00"+s+"0000";
-        order =getSwitchOrder(order);
+        String s = getChannelString(channeOrder << (Integer.valueOf(getChannel()) - 1));
+        order = "AB 68 41 00 " + getRSaddr() + "03 7b 00" + s + "0000";
+        order = getSwitchOrder(order);
         this.closeCmd = order;
     }
 
@@ -243,11 +244,12 @@ public class TenSwitchItem implements Parcelable {
     private String getChannelString(int channeOrder) {
         String s = Integer.toHexString(channeOrder);
         StringBuilder sb = new StringBuilder();
-        if (s.length() < 2) {
+        for (int i = 0; i < 4-s.length(); i++) {
             sb.append("0");
         }
         sb.append(s);
-        s=sb.toString()+"00";
+        s = sb.toString();
+        s = s.substring(2,4)+s.substring(0,2);
         return s;
     }
 

@@ -1,6 +1,8 @@
 package net.suntrans.engineering.activity;
 
 import android.os.Bundle;
+import android.view.View;
+import android.widget.TextView;
 
 import net.suntrans.building.BasedActivity;
 import net.suntrans.engineering.R;
@@ -20,15 +22,28 @@ import java.util.List;
  */
 
 public class SLC6ControlActivity extends BasedActivity {
+    private TextView titleTx;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_control);
         fixStatusBar();
+
+        titleTx = findViewById(R.id.title);
+        String title = getIntent().getStringExtra("title");
+        titleTx.setText(title);
+
+
         String ip = getIntent().getStringExtra("ip");
         int port = getIntent().getIntExtra("port", 8899);
 
+        findViewById(R.id.back).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
         String type = getIntent().getStringExtra("type");
         if (type.equals("4300")) {
             ArrayList<SixSwitchItem> datas = new ArrayList<>();

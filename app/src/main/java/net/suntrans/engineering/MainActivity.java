@@ -1,24 +1,31 @@
 package net.suntrans.engineering;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ServiceInfo;
 import android.databinding.DataBindingUtil;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.DividerItemDecoration;
-import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 
 import com.alibaba.fastjson.JSON;
 import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
+import com.pgyersdk.update.PgyUpdateManager;
 
 import net.suntrans.building.BasedActivity;
 import net.suntrans.engineering.activity.AutoLinkActivity;
+import net.suntrans.engineering.activity.HostActivity;
+import net.suntrans.engineering.activity.ParamActivity;
 import net.suntrans.engineering.activity.SLC6ControlActivity;
 import net.suntrans.engineering.databinding.ActivityMainBinding;
 import net.suntrans.engineering.easylink.DeviceInfo;
+import net.suntrans.engineering.mdns.api.MDNS;
+import net.suntrans.engineering.mdns.helper.SearchDeviceCallBack;
 import net.suntrans.engineering.utils.RxTimerUtil;
 import net.suntrans.engineering.utils.UiUtils;
 
@@ -27,26 +34,12 @@ import org.json.JSONException;
 
 import java.net.InetAddress;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import javax.jmdns.JmDNS;
-import javax.jmdns.ServiceEvent;
-import javax.jmdns.ServiceInfo;
-import javax.jmdns.ServiceListener;
-import javax.jmdns.ServiceTypeListener;
-
-
-import android.content.Context;
-import android.widget.ImageView;
-
-import io.fogcloud.fog_mdns.api.MDNS;
-import io.fogcloud.fog_mdns.helper.SearchDeviceCallBack;
-import okhttp3.internal.http.HttpHeaders;
-
+import static net.suntrans.engineering.BuildConfig.DEBUG;
 import static net.suntrans.engineering.Config.EWM_SERVICE;
 import static net.suntrans.engineering.Config.SENSUS;
 import static net.suntrans.engineering.Config.ST_SLC_10;
@@ -56,9 +49,7 @@ public class MainActivity extends BasedActivity {
 
     private MDNS mdns;
 
-    private static JmDNS jmDNS;
     public static WifiManager.MulticastLock lock;
-    public static ServiceListener listener;
     public static WifiManager wm = null;
     public static ServiceInfo info;
 
@@ -70,7 +61,6 @@ public class MainActivity extends BasedActivity {
 
     static {
         lock = null;
-        listener = null;
         info = null;
     }
 
@@ -87,12 +77,28 @@ public class MainActivity extends BasedActivity {
         searchThreadStart();
         updateUI();
 
+        if (!DEBUG)
+            PgyUpdateManager.register(this, Config.FILE_PROVIDER);
     }
 
 
     private void setUpRecyclerView() {
         datas = new ArrayList<>();
         adapter = new MyAdapter(R.layout.item_devices, datas);
+
+//        DeviceInfo info = new DeviceInfo();
+//        info.Name = "ST-SLC-6_00000000";
+//        info.IP = "192.168.191.5";
+//        info.Port = 8899;
+//        info.MAC = "C8:93:46:84:29:C4";
+//        findDeviceMap.put(info.MAC,info);
+//
+//        DeviceInfo info2 = new DeviceInfo();
+//        info2.Name = "ST-SLC-10_00003039";
+//        info2.IP = "192.168.191.2";
+//        info2.Port = 8899;
+//        info2.MAC = "C8:93:46:84:2E:BF";
+//        findDeviceMap.put(info2.MAC,info2);
 
         binding.recyclerView.setAdapter(adapter);
 
@@ -109,6 +115,32 @@ public class MainActivity extends BasedActivity {
             @Override
             public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
 
+                if (view.getId() == R.id.host) {
+                    Intent intent = new Intent(MainActivity.this, HostActivity.class);
+                    intent.putExtra("title", datas.get(position).Name);
+                    intent.putExtra("ip", datas.get(position).IP);
+                    intent.putExtra("port", datas.get(position).Port);
+                    if (datas.get(position).Name.contains(Config.ST_SLC_6)) {
+                        intent.putExtra("type", Config.TYPE_SLC_6);
+                    } else if (datas.get(position).Name.contains(Config.ST_SLC_10)) {
+                        intent.putExtra("type", Config.TYPE_SLC_10);
+                    }
+                    startActivity(intent);
+
+                } else if (view.getId() == R.id.canshu) {
+
+
+                    Intent intent = new Intent(MainActivity.this, ParamActivity.class);
+                    intent.putExtra("title", datas.get(position).Name);
+                    intent.putExtra("ip", datas.get(position).IP);
+                    intent.putExtra("port", datas.get(position).Port);
+                    if (datas.get(position).Name.contains(Config.ST_SLC_6)) {
+                        intent.putExtra("type", Config.TYPE_SLC_6);
+                    } else if (datas.get(position).Name.contains(Config.ST_SLC_10)) {
+                        intent.putExtra("type", Config.TYPE_SLC_10);
+                    }
+                    startActivity(intent);
+                }
 
             }
         });
@@ -116,18 +148,21 @@ public class MainActivity extends BasedActivity {
         adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                if (datas.get(position).Name.contains(ST_SLC_6)) {
+                    Intent intent = new Intent(MainActivity.this, SLC6ControlActivity.class);
+                    intent.putExtra("type", "4300");
+                    intent.putExtra("ip", datas.get(position).IP);
+                    intent.putExtra("port", datas.get(position).Port);
+                    intent.putExtra("title", datas.get(position).Name);
 
-                if (datas.get(position).Name.contains(ST_SLC_6)){
-                    Intent intent = new Intent(MainActivity.this, SLC6ControlActivity.class);
-                    intent.putExtra("type","4300");
-                    intent.putExtra("ip",datas.get(position).IP);
-                    intent.putExtra("port",datas.get(position).Port);
                     startActivity(intent);
-                }else if (datas.get(position).Name.contains(ST_SLC_10)){
+                } else if (datas.get(position).Name.contains(ST_SLC_10)) {
                     Intent intent = new Intent(MainActivity.this, SLC6ControlActivity.class);
-                    intent.putExtra("type","4100");
-                    intent.putExtra("ip",datas.get(position).IP);
-                    intent.putExtra("port",datas.get(position).Port);
+                    intent.putExtra("type", "4100");
+                    intent.putExtra("ip", datas.get(position).IP);
+                    intent.putExtra("port", datas.get(position).Port);
+                    intent.putExtra("title", datas.get(position).Name);
+
                     startActivity(intent);
                 }
 
@@ -184,6 +219,7 @@ public class MainActivity extends BasedActivity {
             @Override
             public void onDevicesFind(int code, JSONArray deviceStatus) {
                 super.onDevicesFind(code, deviceStatus);
+                System.out.println(deviceStatus);
                 for (int i = 0; i < deviceStatus.length(); i++) {
                     try {
                         String s = deviceStatus.get(i).toString();
@@ -209,8 +245,6 @@ public class MainActivity extends BasedActivity {
         lock.setReferenceCounted(true);
         lock.acquire();
 
-        listener = new SampleListener();
-        jmDNS.addServiceListener("_easylink._tcp.local.", listener);
     }
 
     //更新UI
@@ -218,10 +252,10 @@ public class MainActivity extends BasedActivity {
         RxTimerUtil.interval(3000, new RxTimerUtil.IRxNext() {
             @Override
             public void doNext(long number) {
-               datas.clear();
+                datas.clear();
                 Iterator localIterator = findDeviceMap.entrySet().iterator();
-                while (localIterator.hasNext()){
-                    Map.Entry<String,DeviceInfo> next = (Map.Entry<String,DeviceInfo>)localIterator.next();
+                while (localIterator.hasNext()) {
+                    Map.Entry<String, DeviceInfo> next = (Map.Entry<String, DeviceInfo>) localIterator.next();
                     DeviceInfo value = next.getValue();
                     datas.add(value);
                 }
@@ -245,18 +279,21 @@ public class MainActivity extends BasedActivity {
 
         @Override
         protected void convert(BaseViewHolder helper, DeviceInfo item) {
-           ImageView imageView =  helper.getView(R.id.imageView);
+            ImageView imageView = helper.getView(R.id.imageView);
             helper.setText(R.id.name, item.Name)
-                    .setText(R.id.ip, "IP:"+item.IP)
-                    .setText(R.id.mac, "MAC:"+item.MAC);
+                    .setText(R.id.ip, "IP:" + item.IP)
+                    .setText(R.id.mac, "MAC:" + item.MAC);
             int resID = R.mipmap.ic_launcher;
-            if (item.Name.contains(ST_SLC_10)){
+            if (item.Name.contains(ST_SLC_10)) {
                 resID = R.drawable.ic_shitongdao;
-            }else if (item.Name.contains(ST_SLC_6)){
+            } else if (item.Name.contains(ST_SLC_6)) {
                 resID = R.drawable.ic_liutongdao;
-            }else if (item.Name.contains(SENSUS)){
-                resID  = R.drawable.diliugan;
+            } else if (item.Name.contains(SENSUS)) {
+                resID = R.drawable.diliugan;
             }
+
+            helper.addOnClickListener(R.id.host)
+                    .addOnClickListener(R.id.canshu);
 
             Glide.with(MainActivity.this)
                     .load(resID)
@@ -268,35 +305,6 @@ public class MainActivity extends BasedActivity {
     }
 
 
-    class SampleListener
-            implements ServiceListener, ServiceTypeListener {
-        SampleListener() {
-        }
-
-        public void serviceAdded(ServiceEvent paramServiceEvent) {
-//            info = jmDNS.getServiceInfo(EWM_SERVICE, paramServiceEvent.getName());
-//            if (info != null) {
-//                if (!findDeviceMap.containsKey(paramServiceEvent.getName()))
-//                    findDeviceMap.put(paramServiceEvent.getName(), info);
-//
-//            }
-        }
-
-        public void serviceRemoved(ServiceEvent paramServiceEvent) {
-
-        }
-
-        public void serviceResolved(ServiceEvent paramServiceEvent) {
-        }
-
-        public void serviceTypeAdded(ServiceEvent paramServiceEvent) {
-        }
-
-        @Override
-        public void subTypeForServiceTypeAdded(ServiceEvent event) {
-
-        }
-    }
 
 
     @Override

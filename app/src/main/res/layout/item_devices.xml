@@ -54,7 +54,7 @@
     <Button
         android:id="@+id/canshu"
         android:layout_width="50dp"
-        android:layout_height="30dp"
+        android:layout_height="25dp"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginTop="8dp"
@@ -68,7 +68,7 @@
     <Button
         android:id="@+id/host"
         android:layout_width="50dp"
-        android:layout_height="30dp"
+        android:layout_height="25dp"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginTop="8dp"

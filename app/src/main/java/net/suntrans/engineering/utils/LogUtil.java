@@ -7,7 +7,7 @@ import static net.suntrans.engineering.BuildConfig.DEBUG;
 
 public class LogUtil {
 
-    private static final String TAG = "StAppManager";
+    private static final String TAG = "Engineering";
     // 是否显示Log消息
     private static boolean isShow = DEBUG;
 
