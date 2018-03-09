@@ -1,5 +1,6 @@
 package net.suntrans.engineering;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ServiceInfo;
@@ -22,10 +23,10 @@ import net.suntrans.engineering.activity.AutoLinkActivity;
 import net.suntrans.engineering.activity.HostActivity;
 import net.suntrans.engineering.activity.ParamActivity;
 import net.suntrans.engineering.activity.SLC6ControlActivity;
+import net.suntrans.engineering.activity.SensusActivity;
 import net.suntrans.engineering.databinding.ActivityMainBinding;
 import net.suntrans.engineering.easylink.DeviceInfo;
-import net.suntrans.engineering.mdns.api.MDNS;
-import net.suntrans.engineering.mdns.helper.SearchDeviceCallBack;
+import net.suntrans.engineering.utils.LogUtil;
 import net.suntrans.engineering.utils.RxTimerUtil;
 import net.suntrans.engineering.utils.UiUtils;
 
@@ -38,6 +39,12 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+
+
+import io.fogcloud.fog_mdns.api.MDNS;
+import io.fogcloud.fog_mdns.helper.SearchDeviceCallBack;
+import me.weyye.hipermission.HiPermission;
+import me.weyye.hipermission.PermissionCallback;
 
 import static net.suntrans.engineering.BuildConfig.DEBUG;
 import static net.suntrans.engineering.Config.EWM_SERVICE;
@@ -79,6 +86,35 @@ public class MainActivity extends BasedActivity {
 
         if (!DEBUG)
             PgyUpdateManager.register(this, Config.FILE_PROVIDER);
+
+        checkWritePermission();
+    }
+
+    private void checkWritePermission() {
+//        Manifest.permission.WRITE_EXTERNAL_STORAGE
+        HiPermission.create(this)
+                .checkSinglePermission(Manifest.permission.WRITE_EXTERNAL_STORAGE, new PermissionCallback() {
+                    @Override
+                    public void onClose() {
+
+                    }
+
+                    @Override
+                    public void onFinish() {
+
+                    }
+
+                    @Override
+                    public void onDeny(String permisson, int position) {
+                        LogUtil.i("权限拒绝");
+                    }
+
+                    @Override
+                    public void onGuarantee(String permisson, int position) {
+                        LogUtil.i("权限onGuarantee");
+
+                    }
+                });
     }
 
 
@@ -149,20 +185,30 @@ public class MainActivity extends BasedActivity {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                 if (datas.get(position).Name.contains(ST_SLC_6)) {
+
                     Intent intent = new Intent(MainActivity.this, SLC6ControlActivity.class);
                     intent.putExtra("type", "4300");
                     intent.putExtra("ip", datas.get(position).IP);
                     intent.putExtra("port", datas.get(position).Port);
                     intent.putExtra("title", datas.get(position).Name);
-
                     startActivity(intent);
+
                 } else if (datas.get(position).Name.contains(ST_SLC_10)) {
+
                     Intent intent = new Intent(MainActivity.this, SLC6ControlActivity.class);
                     intent.putExtra("type", "4100");
                     intent.putExtra("ip", datas.get(position).IP);
                     intent.putExtra("port", datas.get(position).Port);
                     intent.putExtra("title", datas.get(position).Name);
+                    startActivity(intent);
 
+                } else if (datas.get(position).Name.contains(SENSUS)) {
+
+                    Intent intent = new Intent(MainActivity.this, SensusActivity.class);
+                    intent.putExtra("type", "6300");
+                    intent.putExtra("ip", datas.get(position).IP);
+                    intent.putExtra("port", datas.get(position).Port);
+                    intent.putExtra("title", datas.get(position).Name);
                     startActivity(intent);
                 }
 
@@ -280,7 +326,13 @@ public class MainActivity extends BasedActivity {
         @Override
         protected void convert(BaseViewHolder helper, DeviceInfo item) {
             ImageView imageView = helper.getView(R.id.imageView);
-            helper.setText(R.id.name, item.Name)
+            String name = item.Name;
+            if (name != null){
+                if (name.contains("#")) {
+                    name = name.split("#")[0];
+                }
+            }
+            helper.setText(R.id.name, name)
                     .setText(R.id.ip, "IP:" + item.IP)
                     .setText(R.id.mac, "MAC:" + item.MAC);
             int resID = R.mipmap.ic_launcher;
@@ -303,8 +355,6 @@ public class MainActivity extends BasedActivity {
                     .into(imageView);
         }
     }
-
-
 
 
     @Override

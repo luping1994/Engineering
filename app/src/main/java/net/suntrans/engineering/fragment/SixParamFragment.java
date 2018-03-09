@@ -130,14 +130,14 @@ public class SixParamFragment extends Fragment implements TcpHelper.OnReceivedLi
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
-                    shinengOrder = "4300 00000000" + "03" + "4900" + "ff07 0000";
+                    shinengOrder = "4300 00000000" + "03" + "d500" + "3f00 0000";
                     shinengOrder = shinengOrder.replace(" ", "");
                     byte[] bytes = Converts.HexString2Bytes(shinengOrder);
                     String crc = Converts.GetCRC(bytes, 0, bytes.length);
                     shinengOrder = "ab68" + shinengOrder + crc + "0d0a";
                     helper.binder.sendOrder(shinengOrder);
                 } else {
-                    shinengOrder = "4300 00000000" + "03" + "4900" + "0000 0000";
+                    shinengOrder = "4300 00000000" + "03" + "d500" + "0000 0000";
                     shinengOrder = shinengOrder.replace(" ", "");
                     byte[] bytes = Converts.HexString2Bytes(shinengOrder);
                     String crc = Converts.GetCRC(bytes, 0, bytes.length);
@@ -214,6 +214,8 @@ public class SixParamFragment extends Fragment implements TcpHelper.OnReceivedLi
             UiUtils.showToast(content);
             return;
         }
+
+
         LogUtil.i(TAG, content);
         //aa6843002700000002
         // 0300
@@ -228,6 +230,7 @@ public class SixParamFragment extends Fragment implements TcpHelper.OnReceivedLi
             if (!content.substring(16, 18).equals("02") && !content.substring(16, 18).equals("04")) {
                 return;
             }
+            binding.refreshlayout.setRefreshing(false);
             String s = content.substring(18, content.length());
 
             int index = 0;

@@ -5,7 +5,6 @@ import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
 
 import net.suntrans.engineering.mdns.helper.CommonFunc;
 import net.suntrans.engineering.mdns.helper.MDNSErrCode;
@@ -16,9 +15,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.net.Inet4Address;
 import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -173,7 +170,7 @@ public class MDNS {
 								intf = getLocalIpAddress(mContext);
 							}
 							if (jmdns == null) {
-								jmdns = JmDNS.create(intf,intf.getHostName());
+								jmdns = JmDNS.create(intf);
 							}
 						}
 					}

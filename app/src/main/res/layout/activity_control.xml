@@ -8,15 +8,14 @@
         android:orientation="vertical"
         tools:context="net.suntrans.engineering.MainActivity">
 
-        <View
-            android:id="@id/statusBarFix"
-            android:layout_width="match_parent"
-            android:layout_height="0dp" />
+        <include layout="@layout/status_bar_fix" />
+
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="?actionBarSize"
             android:background="@color/colorPrimary">
+
             <RelativeLayout
                 android:id="@+id/back"
                 android:layout_width="50dp"
@@ -29,6 +28,7 @@
                     android:layout_centerVertical="true"
                     android:src="@drawable/back" />
             </RelativeLayout>
+
             <TextView
                 android:id="@+id/title"
                 android:layout_width="wrap_content"
@@ -40,11 +40,11 @@
                 android:textSize="@dimen/toolbar_text_size" />
 
             <RelativeLayout
-                android:visibility="gone"
                 android:id="@+id/autoLink"
                 android:layout_width="50dp"
                 android:layout_height="match_parent"
-                android:layout_alignParentRight="true">
+                android:layout_alignParentRight="true"
+                android:visibility="gone">
 
                 <ImageView
                     android:layout_width="wrap_content"

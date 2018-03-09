@@ -8,9 +8,9 @@ android {
     defaultConfig {
         applicationId "net.suntrans.engineering"
         minSdkVersion 17
-        targetSdkVersion 22
-        versionCode 2
-        versionName "1.2"
+        targetSdkVersion 26
+        versionCode 7
+        versionName "0.0.7"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
 
@@ -138,9 +138,9 @@ dependencies {
 
     //mDns
 
-    //    compile 'io.fogcloud.sdk:fog_mdns:0.1.3'
+        compile 'io.fogcloud.sdk:fog_mdns:0.1.3'
 
-    //    compile 'io.fogcloud.sdk:mdns:0.0.3'
+//        compile 'io.fogcloud.sdk:mdns:0.0.3'
     implementation project(':looney')
 
     //    implementation project(':st-devices')
@@ -153,11 +153,8 @@ dependencies {
     //    implementation files('libs/jmdns.jar')
     implementation 'com.pgyersdk:sdk:2.7.9'
 
-    //    implementation files('libs/jmdns-3.4.1.jar')
-//    implementation files('libs/jmdns-3.5.3.jar')
+    compile 'me.weyye.hipermission:library:1.0.3'
 
-    //    implementation files('libs/jmdns.jar')
-    implementation files('libs/jmdns.jar')
 
     compile 'com.qmuiteam:qmui:1.0.6'
 }

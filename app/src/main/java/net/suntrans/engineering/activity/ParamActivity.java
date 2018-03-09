@@ -48,7 +48,7 @@ public class ParamActivity extends BasedActivity  {
         String ip = getIntent().getStringExtra("ip");
         int port = getIntent().getIntExtra("port",8899);
         type = getIntent().getStringExtra("type");
-        if (type.equals(Config.TYPE_SLC_6)){
+        if (Config.TYPE_SLC_6.equals(type)){
             SixParamFragment fragment = SixParamFragment.newInstance(ip,port);
             getSupportFragmentManager().beginTransaction().replace(R.id.content,fragment).commit();
         }else if (Config.TYPE_SLC_10.equals(type)){

@@ -71,6 +71,18 @@ public abstract class Converts {
         return str;
     }
 
+    //转化字符串每两位转化为十六进制编码
+    public static String toHexStringSetp2(String s) {
+        String str = "";
+        for (int i = 0; i < s.length(); i += 2) {
+            String sub = s.substring(i, i + 2);
+            int ch = Integer.valueOf(sub);
+            String s4 = Integer.toHexString(ch);
+            str = str + s4;
+        }
+        return str;
+    }
+
     // 转化十六进制编码为字符串
     public static String toStringHex1(String s) {
         byte[] baKeyword = new byte[s.length() / 2];
@@ -192,6 +204,23 @@ public abstract class Converts {
         return ret;
     }
 
+    /**
+     * 将指定字符串src，以每两个字符分割转换为十进制形式 如："2B44EFD9" -->
+     *
+     * @param s String
+     * @return byte[]
+     */
+    public static String HexString2Int(String s) {
+        s = s.replace(" ","");
+        String str = "";
+        for (int i = 0; i < s.length(); i += 2) {
+            String sub = s.substring(i, i + 2);
+            int s4 = Integer.parseInt(sub,16);
+            str = str + s4;
+        }
+        return str;
+    }
+
     // CRC校验计算    返回两个字节的数据，字符串形式， 高字节在前。   后两个参数分别是开始，结束的位置
     public static String GetCRC(byte[] data, int start, int recv) {
         int CRC_SEED = (int) 0XFFFF;
@@ -278,6 +307,8 @@ public abstract class Converts {
         return newbmp;
     }
 
+
+    //字符串转化为ascii
     public static String strToASCII(String string) {
         StringBuilder sb = new StringBuilder();
         char[] ch = string.toCharArray();
@@ -316,7 +347,7 @@ public abstract class Converts {
 
     //获取ipv6地址
 /*	public static String getLocalIpAddress() {
-		try {
+        try {
 			for (Enumeration<NetworkInterface> en = NetworkInterface.getNetworkInterfaces(); en.hasMoreElements();) {
 				NetworkInterface intf = en.nextElement();
 				for (Enumeration<InetAddress> enumIpAddr = intf.getInetAddresses(); enumIpAddr.hasMoreElements();) {
@@ -390,16 +421,16 @@ public abstract class Converts {
         return b;
     }
 
-    //
+    //反转字符串，低位在前 高位在后
     public static String reverse32HexString(String hexString) {
         if (hexString.length() != 8) {
             return null;
         }
         StringBuilder builder = new StringBuilder();
         String substring1 = hexString.substring(0, 4);
-        substring1 = substring1.substring(2,4)+ substring1.substring(0,2);
+        substring1 = substring1.substring(2, 4) + substring1.substring(0, 2);
         String substring2 = hexString.substring(4, 8);
-        substring2 = substring2.substring(2,4)+ substring2.substring(0,2);
+        substring2 = substring2.substring(2, 4) + substring2.substring(0, 2);
 
         return builder.append(substring2).append(substring1).toString();
 
@@ -414,11 +445,23 @@ public abstract class Converts {
         return sb.toString();
     }
 
-    public static   String getOrderWithCrc (String order){
+    //获取完整命令 包头+order+crc+包尾
+    public static String getOrderWithCrc(String order) {
         order = order.replace(" ", "");
         byte[] bytes = Converts.HexString2Bytes(order);
         String crc = Converts.GetCRC(bytes, 0, bytes.length);
         order = "ab68" + order + crc + "0d0a";
         return order;
+    }
+
+    public static String asciiToString(String value) {
+        value = value.replace(" ","");
+        StringBuffer sbu = new StringBuffer();
+
+        for (int i = 0; i < value.length(); i += 2) {
+            String sub = value.substring(i, i + 2);
+            sbu.append((char) Integer.parseInt(sub));
+        }
+        return sbu.toString();
     }
 }

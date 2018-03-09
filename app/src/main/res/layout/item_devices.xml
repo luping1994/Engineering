@@ -3,8 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:background="@drawable/item_selector"
-    android:layout_height="72dp">
+    android:layout_height="72dp"
+    android:background="@drawable/item_selector">
 
     <ImageView
         android:id="@+id/imageView"
@@ -21,12 +21,12 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:ellipsize="end"
-        android:maxLines="1"
         android:id="@+id/name"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
+        android:ellipsize="end"
+        android:maxLines="1"
         android:text="Name"
         android:textColor="@color/black"
         android:textSize="15sp"
@@ -51,33 +51,49 @@
         app:layout_constraintStart_toStartOf="@+id/guideline2"
         app:layout_constraintTop_toBottomOf="@+id/ip" />
 
-    <Button
+    <RelativeLayout
         android:id="@+id/canshu"
         android:layout_width="50dp"
-        android:layout_height="25dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginTop="8dp"
-        android:background="@drawable/host"
-        android:text="参数"
-        android:textColor="@color/white"
+        android:layout_height="match_parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent">
 
-    <Button
+        <TextView
+            android:gravity="center"
+            android:layout_width="50dp"
+            android:layout_height="25dp"
+            android:layout_centerInParent="true"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/host"
+            android:text="参数"
+            android:textColor="@color/white" />
+    </RelativeLayout>
+
+
+    <RelativeLayout
         android:id="@+id/host"
         android:layout_width="50dp"
-        android:layout_height="25dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginTop="8dp"
-        android:background="@drawable/host"
-        android:text="主机"
-        android:textColor="@color/white"
+        android:layout_height="match_parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/canshu"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:gravity="center"
+            android:layout_width="50dp"
+            android:layout_height="25dp"
+            android:layout_centerInParent="true"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/host"
+            android:text="主机"
+            android:textColor="@color/white" />
+
+    </RelativeLayout>
 
     <android.support.constraint.Guideline
         android:id="@+id/guideline1"

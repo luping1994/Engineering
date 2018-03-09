@@ -20,6 +20,7 @@ import android.view.View;
 import android.widget.ProgressBar;
 
 import net.suntrans.building.BasedActivity;
+import net.suntrans.engineering.App;
 import net.suntrans.engineering.R;
 import net.suntrans.engineering.databinding.ActivityAutolinkBinding;
 import net.suntrans.engineering.utils.UiUtils;
@@ -95,11 +96,15 @@ public class AutoLinkActivity extends BasedActivity {
         params.runSecond = 60000;
         params.sleeptime = 20;
 
+        App.getSharedPreferences().edit()
+                .putString(ssid, password)
+                .commit();
+
         easyLink.startEasyLink(params, new EasyLinkCallBack() {
             @Override
             public void onSuccess(int code, String message) {
                 settedCount++;
-                UiUtils.showToast(settedCount+"个设备已加入 "+binding.ssid.getText().toString());
+                UiUtils.showToast(message);
 
             }
 
@@ -145,6 +150,8 @@ public class AutoLinkActivity extends BasedActivity {
                 NetworkInfo info = intent.getParcelableExtra(WifiManager.EXTRA_NETWORK_INFO);
                 if (info.getDetailedState() == NetworkInfo.DetailedState.CONNECTED) {
                     binding.ssid.setText(easyLink.getSSID());
+                    String password = App.getSharedPreferences().getString(easyLink.getSSID(), "");
+                    binding.password.setText(password);
                 }
             }
         }

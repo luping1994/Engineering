@@ -3,6 +3,7 @@ package net.suntrans.engineering.activity;
 import android.content.DialogInterface;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -134,48 +135,41 @@ public class HostActivity extends BasedActivity implements TcpHelper.OnReceivedL
 
         String ip = "";
         if (Config.TYPE_SLC_10.equals(type)) {
-
+            order = "43 00 00 00 00 00 03";
             ip = data.get(selectedPos - 1).sub.get(0).host;
             portHex = Integer.toHexString(data.get(selectedPos - 1).sub.get(0).port);
 
         } else if (Config.TYPE_SLC_6.equals(type)) {
-
+            order = "43 00 00 00 00 00 03";
             ip = data.get(selectedPos - 1).sub.get(1).host;
             portHex = Integer.toHexString(data.get(selectedPos - 1).sub.get(1).port);
         }
 
 //        ip = "192.168.191.1";
-//        portHex = Integer.toHexString(8899);
+//        portHex = Integer.toHexString(9101);
 
         portHex = getStringFormat(portHex, 8);
         ipHex = Converts.strToASCII(ip);
+        ipHex = Converts.toHexStringSetp2(ipHex);
 
         ipLength = getStringFormat(Integer.toHexString(ip.length()), 2);
 
-//        System.out.println("ip:" + ipHex);
-//        System.out.println("port:" + portHex);
-//        System.out.println("ipLength:" + ipLength);
 
-        order = "AB 68 43 00 00 00 00 00 03";
+
         order = order + "09 00";//09 00  socket1   // 0a 00  socket2
         order += ipLength;//域名长度
         order += ipHex;
         order += portHex;
 
-        order = order.replace(" ", "");
-
-        System.out.println(order.substring(4, order.length()));
-        byte[] bytes = Converts.HexString2Bytes(order.substring(4, order.length()));
-        String crc = Converts.GetCRC(bytes, 0, bytes.length);
-
-        order = order + crc + "0d0a";
+        order = Converts.getOrderWithCrc(order);
 
         order = order.toLowerCase();
         if (helper.binder != null)
             helper.binder.sendOrder(order);
 
-
-        LogUtil.i(TAG,order);
+//        ab 68 43 00 00 00 00 00 03 09 00 0b 31 39 32 2e 31 36 38 2e 31 2e 31 00 00 22 c3 41 96 0d 0a
+        //AB 68 41 00 00 00 00 00 03 09 00 0B 31 39 32 2E 31 36 38 2E 31 2E 31 00 00 1F 90 BA 89 0D 0A
+//        System.out.println(order);
     }
 
     @NonNull
@@ -255,15 +249,22 @@ public class HostActivity extends BasedActivity implements TcpHelper.OnReceivedL
         super.onDestroy();
     }
 
+    private Handler handler = new Handler();
     @Override
     public void onReceive(String content) {
         LogUtil.i(TAG, content);
-
         if (content.equals(order)){
             if (dialog!=null){
                 dialog.dismiss();
             }
-            helper.binder.sendOrder(rebootOrder);
+            UiUtils.showToast("命令已发送");
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    helper.binder.sendOrder(rebootOrder);
+
+                }
+            },500);
         }
         if (content.equals("与服务器连接失败,重连中...") || content.equals("发送失败") || content.equals("连接中断")) {
             UiUtils.showToast(content);
@@ -273,6 +274,5 @@ public class HostActivity extends BasedActivity implements TcpHelper.OnReceivedL
 
     @Override
     public void onConnected() {
-
     }
 }

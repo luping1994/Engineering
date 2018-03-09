@@ -2,6 +2,7 @@ package net.suntrans.building
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
@@ -19,9 +20,9 @@ open class BasedActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+
             window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
-            //            getWindow().setStatusBarColor(Color.TRANSPARENT);
-            //            getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
+                        getWindow().setStatusBarColor(Color.TRANSPARENT);
         }
     }
 
@@ -31,6 +32,12 @@ open class BasedActivity : AppCompatActivity() {
             val statusBarHeight = StatusBarCompat.getStatusBarHeight(this.applicationContext)
             if (statusBarFix != null)
                 statusBarFix.layoutParams.height = statusBarHeight
+
+            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
+                statusBarFix.setBackgroundColor(Color.parseColor("#ffffff"))
+            }else{
+                statusBarFix.setBackgroundColor(Color.parseColor("#888888"))
+            }
         }
     }
 

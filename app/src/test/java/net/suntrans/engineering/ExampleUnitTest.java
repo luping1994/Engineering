@@ -231,4 +231,16 @@ public class ExampleUnitTest {
         }
         return hexString.substring(2, 4) + hexString.substring(0, 2);
     }
+
+    @Test
+    public void test2(){
+        //31 39 32 2E 31 36 38 2E 31 2E 31
+        //31 39 32 2e 31 36 38 2e 31 2e 31
+        //49 57 50 46 49 54 56 46 49 46 49
+        String ip = " 3139322e3136382e3139312e31";
+        String bytes = Converts.HexString2Int(ip);
+        System.out.println(bytes);
+        String s = Converts.asciiToString(bytes);
+        System.out.println(s);
+    }
 }
