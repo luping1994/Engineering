@@ -121,7 +121,6 @@ public class MainActivity extends BasedActivity {
     private void setUpRecyclerView() {
         datas = new ArrayList<>();
         adapter = new MyAdapter(R.layout.item_devices, datas);
-
 //        DeviceInfo info = new DeviceInfo();
 //        info.Name = "ST-SLC-6_00000000";
 //        info.IP = "192.168.191.5";

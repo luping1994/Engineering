@@ -134,8 +134,8 @@ dependencies {
     //    compile('com.tencent.tinker:tinker-android-lib:1.9.1')
 
     // 只发广播的版本
-    compile 'io.fogcloud.sdk:easylinkv3:0.1.4'
-
+//    compile 'io.fogcloud.sdk:easylinkv3:0.1.4'
+    compile 'io.fogcloud.sdk:easylinkv3:0.2.2'
     //mDns
 
         compile 'io.fogcloud.sdk:fog_mdns:0.1.3'

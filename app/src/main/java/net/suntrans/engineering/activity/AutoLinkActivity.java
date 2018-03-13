@@ -1,9 +1,7 @@
 package net.suntrans.engineering.activity;
 
-import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.databinding.DataBindingUtil;
@@ -12,12 +10,9 @@ import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.ProgressBar;
 
 import net.suntrans.building.BasedActivity;
 import net.suntrans.engineering.App;
@@ -96,7 +91,8 @@ public class AutoLinkActivity extends BasedActivity {
         params.runSecond = 60000;
         params.sleeptime = 20;
 
-        App.getSharedPreferences().edit()
+        App.getSharedPreferences()
+                .edit()
                 .putString(ssid, password)
                 .commit();
 
@@ -105,7 +101,6 @@ public class AutoLinkActivity extends BasedActivity {
             public void onSuccess(int code, String message) {
                 settedCount++;
                 UiUtils.showToast(message);
-
             }
 
             @Override
@@ -123,6 +118,7 @@ public class AutoLinkActivity extends BasedActivity {
     }
 
     private void stopEasyLink() {
+
         easyLink.stopEasyLink(new EasyLinkCallBack() {
             @Override
             public void onSuccess(int code, String message) {
