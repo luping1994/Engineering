@@ -27,6 +27,7 @@ import javax.jmdns.ServiceEvent;
 import javax.jmdns.ServiceInfo;
 import javax.jmdns.ServiceListener;
 
+
 //import android.util.Log;
 
 public class MDNS {
@@ -211,7 +212,7 @@ public class MDNS {
 
 
 	class SampleListener implements ServiceListener {
-		ServiceInfo	sName;
+		ServiceInfo sName;
 		@Override
 		public void serviceAdded(ServiceEvent event) {
 			if (!jsonmap.containsKey(event.getName())) {
@@ -285,21 +286,14 @@ public class MDNS {
 
 		@Override
 		public void serviceRemoved(ServiceEvent event) {
-			// Log.d("---HomeFragment---", event.getName());
-//			jsonmap.remove(event.getName());
-			// 通知handler有数据更新
-//			Message msg = new Message();
-//			msg.what = _REMOVEDEVICE;
-//			mdnsHandler.sendMessage(msg);
+
 		}
 
 		@Override
 		public void serviceResolved(ServiceEvent event) {
-			ServiceInfo	sName = jmdns.getServiceInfo(mserviceName, event.getName());
 
-			System.out.println("serviceResolved:"+event.getName());
-			System.out.println("serviceResolved:"+sName==null?"NULL":sName);
 		}
+
 	}
 
 	private Handler mdnsHandler = new Handler() {

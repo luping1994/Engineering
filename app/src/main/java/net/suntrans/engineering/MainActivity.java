@@ -26,6 +26,8 @@ import net.suntrans.engineering.activity.SLC6ControlActivity;
 import net.suntrans.engineering.activity.SensusActivity;
 import net.suntrans.engineering.databinding.ActivityMainBinding;
 import net.suntrans.engineering.easylink.DeviceInfo;
+import net.suntrans.engineering.mdns.api.MDNS;
+import net.suntrans.engineering.mdns.helper.SearchDeviceCallBack;
 import net.suntrans.engineering.utils.LogUtil;
 import net.suntrans.engineering.utils.RxTimerUtil;
 import net.suntrans.engineering.utils.UiUtils;
@@ -41,8 +43,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 
-import io.fogcloud.fog_mdns.api.MDNS;
-import io.fogcloud.fog_mdns.helper.SearchDeviceCallBack;
+
 import me.weyye.hipermission.HiPermission;
 import me.weyye.hipermission.PermissionCallback;
 

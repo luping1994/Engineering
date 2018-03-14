@@ -34,6 +34,7 @@ public class AutoLinkActivity extends BasedActivity {
     private EasyLink easyLink;
     private ActivityAutolinkBinding binding;
     private AlertDialog dialog;
+//    private EasylinkP2P easylinkP2P;
 
 
     @Override
@@ -42,6 +43,8 @@ public class AutoLinkActivity extends BasedActivity {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_autolink);
         fixStatusBar();
         easyLink = new EasyLink(this);
+//        easylinkP2P = new EasylinkP2P(this);
+
         listenwifichange();
 
         binding.back.setOnClickListener(new View.OnClickListener() {
@@ -96,6 +99,18 @@ public class AutoLinkActivity extends BasedActivity {
                 .putString(ssid, password)
                 .commit();
 
+//        easylinkP2P.startEasyLink(params, new EasyLinkCallBack() {
+//            @Override
+//            public void onSuccess(int code, String message) {
+//                UiUtils.showToast(message);
+//
+//            }
+//
+//            @Override
+//            public void onFailure(int code, String message) {
+//
+//            }
+//        });
         easyLink.startEasyLink(params, new EasyLinkCallBack() {
             @Override
             public void onSuccess(int code, String message) {
@@ -130,6 +145,18 @@ public class AutoLinkActivity extends BasedActivity {
 
             }
         });
+
+//        easylinkP2P.stopEasyLink(new EasyLinkCallBack() {
+//            @Override
+//            public void onSuccess(int code, String message) {
+//
+//            }
+//
+//            @Override
+//            public void onFailure(int code, String message) {
+//
+//            }
+//        });
     }
 
     private void listenwifichange() {
