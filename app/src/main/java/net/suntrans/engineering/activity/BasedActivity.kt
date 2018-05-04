@@ -20,9 +20,8 @@ open class BasedActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-
-            window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
-                        getWindow().setStatusBarColor(Color.TRANSPARENT);
+//            window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
+//                        getWindow().setStatusBarColor(Color.TRANSPARENT);
         }
     }
 

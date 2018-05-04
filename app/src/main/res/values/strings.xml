@@ -6,4 +6,15 @@
     <string name="title_choose_project">请选择项目</string>
     <string name="tips_host_setting">是否将此设备配置%1$s服务器上</string>
     <string name="tips_setting">正在设置,请稍后...</string>
+    <string name="addr">通信地址:%1$s(%2$s)</string>
+    <string name="tips_update">确定升级?</string>
+    <string name="tips_not_sup_device">暂不支持的设备类型</string>
+    <string name="tips_waiting">请稍后再试!</string>
+    <string name="tips_get_network_state">获取您的网络状态</string>
+    <string name="tips_get_write_storage">存储权限</string>
+    <string name="tips_change_wifi_state">改变wifi状态</string>
+    <string name="tips_is_exit">是否退出应用</string>
+    <string name="not_named">未命名</string>
+    <string name="tips_contain_ssid_password">请确认SSID和密码</string>
+    <string name="tips_cmd_sent">命令已发送</string>
 </resources>

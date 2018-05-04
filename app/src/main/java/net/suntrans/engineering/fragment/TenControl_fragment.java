@@ -17,6 +17,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
@@ -32,6 +33,7 @@ import net.suntrans.engineering.utils.UiUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.PriorityQueue;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -51,13 +53,14 @@ public class TenControl_fragment extends Fragment implements TcpHelper.OnReceive
     private int port;
     private String ip;
     private ProgressDialog connectDialog;
+    private TextView addr;
 
     public static TenControl_fragment newInstance(ArrayList<TenSwitchItem> datas, String ip, int port) {
         TenControl_fragment fragment = new TenControl_fragment();
         Bundle bundle = new Bundle();
-        bundle.putParcelableArrayList("datas",datas);
-        bundle.putString("ip",ip);
-        bundle.putInt("port",port);
+        bundle.putParcelableArrayList("datas", datas);
+        bundle.putString("ip", ip);
+        bundle.putInt("port", port);
         fragment.setArguments(bundle);
         return fragment;
     }
@@ -112,10 +115,11 @@ public class TenControl_fragment extends Fragment implements TcpHelper.OnReceive
         });
         shutdownDialog = new ProgressDialog(getActivity());
 
+        addr = view.findViewById(R.id.addr);
 
         ip = getArguments().getString("ip");
         port = getArguments().getInt("port");
-        connectToServer(ip,port);
+        connectToServer(ip, port);
     }
 
 
@@ -138,24 +142,29 @@ public class TenControl_fragment extends Fragment implements TcpHelper.OnReceive
 
     @Override
     public void onReceive(String content) {
+        try {
+            LogUtil.i(TAG, content);
+            if (content.equals("与服务器连接失败,重连中...") || content.equals("发送失败") || content.equals("连接中断")) {
+                UiUtils.showToast(content);
+                return;
+            }
 
-        LogUtil.i(TAG, content);
-        if (content.equals("与服务器连接失败,重连中...")||content.equals("发送失败")||content.equals("连接中断"))
-        {
-            UiUtils.showToast(content);
-            return;
+            parseSwitchData(content);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        parseSwitchData(content);
         adapter.notifyDataSetChanged();
         showSuccessDialog();
         handler.sendEmptyMessage(MSG_STOP_REFRESH);
     }
-    public void disconnect(){
+
+    public void disconnect() {
         dialog.dismiss();
-        if (helper!=null)
+        if (helper != null)
             helper.unRegister();
-        helper=null;
+        helper = null;
     }
+
     @Override
     public void onConnected() {
         connectDialog.dismiss();
@@ -166,17 +175,17 @@ public class TenControl_fragment extends Fragment implements TcpHelper.OnReceive
             public void run() {
                 getSwitchState();
             }
-        },300);
+        }, 300);
     }
 
     private void getSwitchState() {
         handler.sendEmptyMessage(MSG_START_REFRESH);
-        handler.sendEmptyMessageDelayed(MSG_STOP_REFRESH,2000);
+        handler.sendEmptyMessageDelayed(MSG_STOP_REFRESH, 2000);
         tasks.add(new GetDataTask().execute());
     }
 
 
-    class GetDataTask extends AsyncTask<Void,Void,String>{
+    class GetDataTask extends AsyncTask<Void, Void, String> {
 
         @Override
         protected String doInBackground(Void... params) {
@@ -204,11 +213,11 @@ public class TenControl_fragment extends Fragment implements TcpHelper.OnReceive
 
     private ProgressDialog shutdownDialog;
 
-    class CloseAllTask extends AsyncTask<String,String,String>{
+    class CloseAllTask extends AsyncTask<String, String, String> {
 
         @Override
         protected String doInBackground(String... params) {
-            for (int i=0;i<datas.size();i++){
+            for (int i = 0; i < datas.size(); i++) {
                 helper.binder.sendOrder(datas.get(i).getCloseCmd());
                 publishProgress((i + 1) + "/" + datas.size());
                 try {
@@ -244,8 +253,8 @@ public class TenControl_fragment extends Fragment implements TcpHelper.OnReceive
         @Override
         protected void convert(BaseViewHolder helper, TenSwitchItem item) {
             ImageView imageView = helper.getView(R.id.image);
-            imageView.setImageResource(item.getState().equals("1") ?item.getOpImageId() : item.getCloseImageId());
-            helper.setText(R.id.name,"通道"+item.getChannel()+"");
+            imageView.setImageResource(item.getState().equals("1") ? item.getOpImageId() : item.getCloseImageId());
+            helper.setText(R.id.name, "通道" + item.getChannel() + "");
         }
 
     }
@@ -264,7 +273,7 @@ public class TenControl_fragment extends Fragment implements TcpHelper.OnReceive
         }
     };
 
-    public void connectToServer(String ip,int port) {
+    public void connectToServer(String ip, int port) {
         connectDialog.show();
         helper = new TcpHelper((AppCompatActivity) getActivity(), ip, port, null);
         helper.setOnReceivedListener(this);
@@ -284,7 +293,7 @@ public class TenControl_fragment extends Fragment implements TcpHelper.OnReceive
         super.onDestroyView();
         helper.unRegister();
         handler.removeCallbacksAndMessages(null);
-        for (AsyncTask task:
+        for (AsyncTask task :
                 tasks) {
             task.cancel(true);
         }
@@ -294,7 +303,7 @@ public class TenControl_fragment extends Fragment implements TcpHelper.OnReceive
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId()==R.id.close){
+        if (item.getItemId() == R.id.close) {
             shutdownDialog.show();
             tasks.add(new CloseAllTask().execute());
         }
@@ -340,27 +349,41 @@ public class TenControl_fragment extends Fragment implements TcpHelper.OnReceive
             }
         }, 2000);
     }
+
     byte[] bits = {(byte) 0x01, (byte) 0x02, (byte) 0x04, (byte) 0x08, (byte) 0x10, (byte) 0x20, (byte) 0x40, (byte) 0x80};     //从1到8只有一位是1，用于按位与计算，获取某一位的值
 
     private void parseSwitchData(String s) {
-        if (s.length()<16)
+        if (s.length() < 16)
             return;
 
-        if (!s.substring(4,8).equals("4100")){
+        if (!s.substring(4, 8).equals("4100")) {
             return;
         }
 
+        String addrStr = s.substring(8, 16);
+        LogUtil.i(TAG, addrStr);
+
+        String s2 = Converts.reverse32HexString(addrStr);
+        LogUtil.i(TAG, s2);
+
+        String i1 = Integer.parseInt(s2, 16) + "";
+
+        i1 = Converts.paddingHexString(i1, 4);
+
+        s2 = Converts.reverse32HexString(s2);
+        addr.setText(String.format(getContext().getString(R.string.addr), s2, i1));
+
         //总开关状态
-        s = s.replace(" ","");
+        s = s.replace(" ", "");
         String s1 = s.substring(22, 26);
-        s1 = s1.substring(2,4)+s1.substring(0,2);
-        String[] states = {"0", "0", "0", "0", "0", "0","0","0","0","0"};   //10个通道的状态，state[0]对应1通道
+        s1 = s1.substring(2, 4) + s1.substring(0, 2);
+        String[] states = {"0", "0", "0", "0", "0", "0", "0", "0", "0", "0"};   //10个通道的状态，state[0]对应1通道
         byte[] a = Converts.HexString2Bytes(s1);
         for (int i = 0; i < 10; i++) {
-            if (i<8){
+            if (i < 8) {
                 states[i] = ((a[1] & bits[i]) == bits[i]) ? "1" : "0";
-            }else {
-                states[i] = ((a[0] & bits[i-8]) == bits[i-8]) ? "1" : "0";
+            } else {
+                states[i] = ((a[0] & bits[i - 8]) == bits[i - 8]) ? "1" : "0";
             }
 //            System.out.println("通道"+(i+1)+":"+states[i]+",");
         }

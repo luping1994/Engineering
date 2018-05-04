@@ -82,6 +82,7 @@ public class SixParamFragment extends Fragment implements TcpHelper.OnReceivedLi
             "d5 00" +
             "00000000";
     String shinengOrder = "";
+    private Map<String,String> maps = new HashMap<>();
     private Handler handler = new Handler();
 
     @Nullable
@@ -96,6 +97,8 @@ public class SixParamFragment extends Fragment implements TcpHelper.OnReceivedLi
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        initData();
         String ip = getArguments().getString("ip");
         int port = getArguments().getInt("port");
         connectToServer(ip, port);
@@ -157,9 +160,19 @@ public class SixParamFragment extends Fragment implements TcpHelper.OnReceivedLi
         binding.guoya.setOnClickListener(this);
         binding.qianya.setOnClickListener(this);
 
-        for (int i=0;i<10;i++){
-            params.put(i,0);
-        }
+    }
+
+    private void initData() {
+        params.put("da00",0);
+        params.put("0301",0);
+        params.put("0401",0);
+        params.put("0501",0);
+        params.put("0601",0);
+        params.put("0701",0);
+        params.put("0801",0);
+        params.put("d900",0);
+        params.put("d800",0);
+        params.put("d500",0);
     }
 
     private void getData() {
@@ -206,27 +219,18 @@ public class SixParamFragment extends Fragment implements TcpHelper.OnReceivedLi
     }
 
 
-    private Map<Integer,Integer> params = new HashMap<>();
+    private Map<String,Integer> params = new HashMap<>();
 
     @Override
     public void onReceive(String content) {
-        if (content.equals("与服务器连接失败,重连中...") || content.equals("发送失败") || content.equals("连接中断")) {
-            UiUtils.showToast(content);
-            return;
-        }
-
-
-        LogUtil.i(TAG, content);
-        //aa6843002700000002
-        // 0300
-        // 00000000
-        // 0400a6e050440500489358440600000000000700ffffffff0800ffffffffd80096000000d900400b00005e5d0d0a
-
-//        if (content.length()<18)
-//            return;
 
 
         try {
+            if (content.equals("与服务器连接失败,重连中...") || content.equals("发送失败") || content.equals("连接中断")) {
+                UiUtils.showToast(content);
+                return;
+            }
+
             if (!content.substring(16, 18).equals("02") && !content.substring(16, 18).equals("04")) {
                 return;
             }
@@ -235,10 +239,11 @@ public class SixParamFragment extends Fragment implements TcpHelper.OnReceivedLi
 
             int index = 0;
             for (int i = 0; i < 10; i++) {
+                String key =s.substring(index,index+4);
                 String param = s.substring(index + 4, index + 12);
                 index += 12;
                 String s1 = Converts.reverse32HexString(param);
-                params.put(i,Integer.parseInt(s1, 16));
+                params.put(key,Integer.parseInt(s1, 16));
             }
 
             updateUI();
@@ -250,16 +255,16 @@ public class SixParamFragment extends Fragment implements TcpHelper.OnReceivedLi
     }
 
     private void updateUI() {
-        binding.guoliu.setText(params.get(0) / 100 + "");
-        binding.guoliu1.setText(params.get(1) / 100 + "");
-        binding.guoliu2.setText(params.get(2) / 100 + "");
-        binding.guoliu3.setText(params.get(3) / 100 + "");
-        binding.guoliu4.setText(params.get(4) / 100 + "");
-        binding.guoliu5.setText(params.get(5) / 100 + "");
-        binding.guoliu6.setText(params.get(6) / 100 + "");
-        binding.guoya.setText(params.get(7) / 10 + "");
-        binding.qianya.setText(params.get(8) / 10 + "");
-        if (params.get(9) == 63) {
+        binding.guoliu.setText(params.get("da00") / 100 + "");
+        binding.guoliu1.setText(params.get("0301") / 100 + "");
+        binding.guoliu2.setText(params.get("0401") / 100 + "");
+        binding.guoliu3.setText(params.get("0501") / 100 + "");
+        binding.guoliu4.setText(params.get("0601") / 100 + "");
+        binding.guoliu5.setText(params.get("0701") / 100 + "");
+        binding.guoliu6.setText(params.get("0801") / 100 + "");
+        binding.guoya.setText(params.get("d900") / 10 + "");
+        binding.qianya.setText(params.get("d800") / 10 + "");
+        if (params.get("d500") == 63) {
             binding.anjianshineng.setChecked(true);
         } else {
             binding.anjianshineng.setChecked(false);
@@ -279,6 +284,7 @@ public class SixParamFragment extends Fragment implements TcpHelper.OnReceivedLi
         }, 500);
     }
 
+    private String currentModifyAddr="";
     @Override
     public void onClick(final View v) {
         QMUIDialog.EditTextDialogBuilder builder = new QMUIDialog.EditTextDialogBuilder(getContext());
@@ -289,46 +295,53 @@ public class SixParamFragment extends Fragment implements TcpHelper.OnReceivedLi
             case R.id.guoliu:
                 builder.setTitle("总过流");
                 editText.setText(binding.guoliu.getText().toString());
+                currentModifyAddr="da00";
                 break;
             case R.id.guoliu1:
                 builder.setTitle("通道1过流");
                 editText.setText(binding.guoliu1.getText().toString());
-
+                currentModifyAddr="0301";
                 break;
             case R.id.guoliu2:
                 builder.setTitle("通道2过流");
                 editText.setText(binding.guoliu2.getText().toString());
+                currentModifyAddr="0401";
 
                 break;
             case R.id.guoliu3:
                 builder.setTitle("通道3过流");
                 editText.setText(binding.guoliu3.getText().toString());
+                currentModifyAddr="0501";
 
                 break;
             case R.id.guoliu4:
                 builder.setTitle("通道4过流");
                 editText.setText(binding.guoliu4.getText().toString());
+                currentModifyAddr="0601";
 
                 break;
             case R.id.guoliu5:
                 builder.setTitle("通道5过流");
                 editText.setText(binding.guoliu5.getText().toString());
+                currentModifyAddr="0701";
 
                 break;
             case R.id.guoliu6:
                 builder.setTitle("通道6过流");
                 editText.setText(binding.guoliu6.getText().toString());
+                currentModifyAddr="0801";
 
                 break;
             case R.id.guoya:
                 builder.setTitle("过压");
                 editText.setText(binding.guoya.getText().toString());
+                currentModifyAddr="d900";
 
                 break;
             case R.id.qianya:
                 builder.setTitle("欠压");
                 editText.setText(binding.qianya.getText().toString());
-
+                currentModifyAddr="d800";
                 break;
         }
         builder.addAction(R.string.cancel, new QMUIDialogAction.ActionListener() {
@@ -347,40 +360,39 @@ public class SixParamFragment extends Fragment implements TcpHelper.OnReceivedLi
                     return;
                 }
                 dialog.dismiss();
-                System.out.println("输入的数值为:"+s);
                 switch (v.getId()) {
                     case R.id.guoliu:
-                        params.put(0,Integer.valueOf(s)*100);
+                        params.put("da00",Integer.valueOf(s)*100);
                         break;
                     case R.id.guoliu1:
-                        params.put(1,Integer.valueOf(s)*100);
+                        params.put("0301",Integer.valueOf(s)*100);
                         break;
                     case R.id.guoliu2:
-                        params.put(2,Integer.valueOf(s)*100);
+                        params.put("0401",Integer.valueOf(s)*100);
 
                         break;
                     case R.id.guoliu3:
-                        params.put(3,Integer.valueOf(s)*100);
+                        params.put("0501",Integer.valueOf(s)*100);
 
                         break;
                     case R.id.guoliu4:
-                        params.put(4,Integer.valueOf(s)*100);
+                        params.put("0601",Integer.valueOf(s)*100);
 
                         break;
                     case R.id.guoliu5:
-                        params.put(5,Integer.valueOf(s)*100);
+                        params.put("0701",Integer.valueOf(s)*100);
 
                         break;
                     case R.id.guoliu6:
-                        params.put(6,Integer.valueOf(s)*100);
+                        params.put("0801",Integer.valueOf(s)*100);
 
                         break;
                     case R.id.guoya:
-                        params.put(7,Integer.valueOf(s)*10);
+                        params.put("d900",Integer.valueOf(s)*10);
 
                         break;
                     case R.id.qianya:
-                        params.put(8,Integer.valueOf(s)*10);
+                        params.put("d800",Integer.valueOf(s)*10);
                         break;
                 }
                 updateUI();
@@ -393,42 +405,49 @@ public class SixParamFragment extends Fragment implements TcpHelper.OnReceivedLi
 
     private void sendParam() {
 
-
-        String guoliu = Converts.reverse32HexString(Converts.paddingHexString(Integer.toHexString(params.get(0)), 8));
-        String guoliu1 = Converts.reverse32HexString(Converts.paddingHexString(Integer.toHexString(params.get(1)), 8));
-        String guoliu2 = Converts.reverse32HexString(Converts.paddingHexString(Integer.toHexString(params.get(2)), 8));
-        String guoliu3 = Converts.reverse32HexString(Converts.paddingHexString(Integer.toHexString(params.get(3)), 8));
-        String guoliu4 = Converts.reverse32HexString(Converts.paddingHexString(Integer.toHexString(params.get(4)), 8));
-        String guoliu5 = Converts.reverse32HexString(Converts.paddingHexString(Integer.toHexString(params.get(5)), 8));
-        String guoliu6 = Converts.reverse32HexString(Converts.paddingHexString(Integer.toHexString(params.get(6)), 8));
-        String guoya = Converts.reverse32HexString(Converts.paddingHexString(Integer.toHexString(params.get(7)), 8));
-        String qianya = Converts.reverse32HexString(Converts.paddingHexString(Integer.toHexString(params.get(8)), 8));
-        String shineng = Converts.reverse32HexString(Converts.paddingHexString(Integer.toHexString(params.get(9)), 8));
-
+//
+//        String guoliu = Converts.reverse32HexString(Converts.paddingHexString(Integer.toHexString(params.get("da00")), 8));
+//        String guoliu1 = Converts.reverse32HexString(Converts.paddingHexString(Integer.toHexString(params.get("0301")), 8));
+//        String guoliu2 = Converts.reverse32HexString(Converts.paddingHexString(Integer.toHexString(params.get("0401")), 8));
+//        String guoliu3 = Converts.reverse32HexString(Converts.paddingHexString(Integer.toHexString(params.get("0501")), 8));
+//        String guoliu4 = Converts.reverse32HexString(Converts.paddingHexString(Integer.toHexString(params.get("0601")), 8));
+//        String guoliu5 = Converts.reverse32HexString(Converts.paddingHexString(Integer.toHexString(params.get("0701")), 8));
+//        String guoliu6 = Converts.reverse32HexString(Converts.paddingHexString(Integer.toHexString(params.get("0801")), 8));
+//        String guoya = Converts.reverse32HexString(Converts.paddingHexString(Integer.toHexString(params.get("d900")), 8));
+//        String qianya = Converts.reverse32HexString(Converts.paddingHexString(Integer.toHexString(params.get("d800")), 8));
+//        String shineng = Converts.reverse32HexString(Converts.paddingHexString(Integer.toHexString(params.get("d500")), 8));
+//
         StringBuilder sb = new StringBuilder();
+//        sb.append("4300")
+//                .append("00 00 00 00")
+//                .append("03")
+//                .append("da00")
+//                .append(guoliu)
+//                .append("0301")
+//                .append(guoliu1)
+//                .append("0401")
+//                .append(guoliu2)
+//                .append("0501")
+//                .append(guoliu3)
+//                .append("0601")
+//                .append(guoliu4)
+//                .append("0701")
+//                .append(guoliu5)
+//                .append("0801")
+//                .append(guoliu6)
+//                .append("d900")
+//                .append(guoya)
+//                .append("d800")
+//                .append(qianya);
+//                .append("d500")
+//                .append(shineng);
+
+        String param = Converts.reverse32HexString(Converts.paddingHexString(Integer.toHexString(params.get(currentModifyAddr)), 8));
         sb.append("4300")
                 .append("00 00 00 00")
                 .append("03")
-                .append("da00")
-                .append(guoliu)
-                .append("0301")
-                .append(guoliu1)
-                .append("0401")
-                .append(guoliu2)
-                .append("0501")
-                .append(guoliu3)
-                .append("0601")
-                .append(guoliu4)
-                .append("0701")
-                .append(guoliu5)
-                .append("0801")
-                .append(guoliu6)
-                .append("d900")
-                .append(guoya)
-                .append("d800")
-                .append(qianya)
-                .append("d500")
-                .append(shineng);
+                .append(currentModifyAddr)
+                .append(param);
 
         String order = Converts.getOrderWithCrc(sb.toString());
         helper.binder.sendOrder(order);

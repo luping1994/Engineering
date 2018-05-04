@@ -35,7 +35,6 @@
         <activity android:name=".stslc6.Stslc6_control_activity2" />
         <activity android:name=".sensus.Sixsensor_detail_activity" />
         <activity android:name=".slslc10.St_slc_10list_activity" />
-        <activity android:name=".activity.ApListActivity" />
         <activity android:name=".activity.EWM_Config_Activity1" android:theme="@style/AppTheme.Transparent" />
         <activity android:name=".activity.AddDevicesActivity2" android:theme="@style/AppTheme.Transparent"/>
         <activity android:name=".activity.AdvancedSetting_Activity" />

@@ -1,8 +1,8 @@
-<layout >
+<layout>
 
     <android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/refreshlayout"
         xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/refreshlayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -30,7 +30,6 @@
                         android:textColor="@color/black" />
 
                     <TextView
-                        android:textSize="@dimen/param_text_size"
                         android:id="@+id/guoliuAll"
                         android:layout_width="100dp"
                         android:layout_height="35dp"
@@ -39,7 +38,8 @@
                         android:layout_marginRight="16dp"
                         android:background="@drawable/border_edit"
                         android:gravity="center"
-                        android:text="--" />
+                        android:text="--"
+                        android:textSize="@dimen/param_text_size" />
                 </RelativeLayout>
 
                 <include layout="@layout/item_divider" />
@@ -58,9 +58,8 @@
                         android:textColor="@color/black" />
 
                     <TextView
-                        android:textSize="@dimen/param_text_size"
-
                         android:id="@+id/guoliuSingle"
+
                         android:layout_width="100dp"
                         android:layout_height="35dp"
                         android:layout_alignParentRight="true"
@@ -68,7 +67,8 @@
                         android:layout_marginRight="16dp"
                         android:background="@drawable/border_edit"
                         android:gravity="center"
-                        android:text="--" />
+                        android:text="--"
+                        android:textSize="@dimen/param_text_size" />
                 </RelativeLayout>
 
                 <include layout="@layout/item_divider" />
@@ -88,9 +88,8 @@
                         android:textColor="@color/black" />
 
                     <TextView
-                        android:textSize="@dimen/param_text_size"
-
                         android:id="@+id/guoya"
+
                         android:layout_width="100dp"
                         android:layout_height="35dp"
                         android:layout_alignParentRight="true"
@@ -98,7 +97,8 @@
                         android:layout_marginRight="16dp"
                         android:background="@drawable/border_edit"
                         android:gravity="center"
-                        android:text="--" />
+                        android:text="--"
+                        android:textSize="@dimen/param_text_size" />
                 </RelativeLayout>
 
                 <include layout="@layout/item_divider" />
@@ -117,7 +117,6 @@
                         android:textColor="@color/black" />
 
                     <TextView
-                        android:textSize="@dimen/param_text_size"
                         android:id="@+id/qianya"
                         android:layout_width="100dp"
                         android:layout_height="35dp"
@@ -126,7 +125,8 @@
                         android:layout_marginRight="16dp"
                         android:background="@drawable/border_edit"
                         android:gravity="center"
-                        android:text="--" />
+                        android:text="--"
+                        android:textSize="@dimen/param_text_size" />
                 </RelativeLayout>
 
                 <include layout="@layout/item_divider" />
@@ -179,6 +179,125 @@
                         android:layout_centerVertical="true"
                         android:layout_marginRight="16dp"
                         android:gravity="center" />
+                </RelativeLayout>
+
+                <include layout="@layout/item_divider" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:background="@color/white"
+                    android:paddingLeft="16dp">
+
+                    <TextView
+                        android:id="@+id/versionTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:text="版本号"
+                        android:textColor="@color/black" />
+
+                    <TextView
+                        android:id="@+id/version"
+                        android:layout_width="100dp"
+                        android:layout_height="35dp"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginRight="16dp"
+                        android:layout_toRightOf="@+id/versionTitle"
+                        android:background="@drawable/border_edit"
+                        android:gravity="center_vertical"
+                        android:paddingLeft="16dp"
+                        android:text="--"
+                        android:textSize="@dimen/param_text_size" />
+
+                    <TextView
+                        android:id="@+id/getVersion"
+                        android:layout_width="50dp"
+                        android:layout_height="25dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="16dp"
+                        android:background="@drawable/host"
+                        android:gravity="center"
+                        android:text="获取"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/param_text_size" />
+                </RelativeLayout>
+
+                <include layout="@layout/item_divider" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:background="@color/white"
+                    android:paddingLeft="16dp">
+
+                    <TextView
+                        android:id="@+id/wifiTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:text="信号强度"
+                        android:textColor="@color/black" />
+
+                    <TextView
+                        android:id="@+id/wifi"
+                        android:layout_width="100dp"
+                        android:layout_height="35dp"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginRight="16dp"
+                        android:layout_toRightOf="@+id/wifiTitle"
+                        android:background="@drawable/border_edit"
+                        android:gravity="center_vertical"
+                        android:paddingLeft="16dp"
+                        android:text="--"
+                        android:textSize="@dimen/param_text_size" />
+
+                    <TextView
+                        android:id="@+id/getWifi"
+                        android:layout_width="50dp"
+                        android:layout_height="25dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="16dp"
+                        android:background="@drawable/host"
+                        android:gravity="center"
+                        android:text="获取"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/param_text_size" />
+                </RelativeLayout>
+
+                <include layout="@layout/item_divider" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:background="@color/white"
+                    android:paddingLeft="16dp">
+
+                    <EditText
+                        android:textSize="14sp"
+                        android:id="@+id/updateTitle"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center_vertical"
+                        android:text="ST-SLC-10_QQ_2.0.0.5.bin"
+                        android:textColor="@color/black" />
+
+                    <TextView
+                        android:id="@+id/update"
+                        android:layout_width="50dp"
+                        android:layout_height="25dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="16dp"
+                        android:background="@drawable/host"
+                        android:gravity="center"
+                        android:text="升级"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/param_text_size" />
                 </RelativeLayout>
 
                 <include layout="@layout/item_divider" />

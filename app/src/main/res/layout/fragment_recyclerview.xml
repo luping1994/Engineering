@@ -4,12 +4,28 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
+ <LinearLayout
+     android:orientation="vertical"
+     android:layout_width="match_parent"
+     android:layout_height="match_parent">
+     <TextView
+         android:paddingLeft="16dp"
+         android:text="通信地址"
+         android:textColor="@color/black"
+         android:gravity="center_vertical"
+         android:id="@+id/addr"
+         android:layout_width="match_parent"
+         android:layout_height="50dp" />
+     <View
+         android:background="#cccccc"
+         android:layout_width="match_parent"
+         android:layout_height="1dp"/>
+     <android.support.v7.widget.RecyclerView
+         android:layout_marginTop="16dp"
+         android:id="@+id/recyclerview"
+         android:layout_width="match_parent"
+         android:layout_height="match_parent">
 
-    <android.support.v7.widget.RecyclerView
-        android:layout_marginTop="16dp"
-        android:id="@+id/recyclerview"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-    </android.support.v7.widget.RecyclerView>
+     </android.support.v7.widget.RecyclerView>
+ </LinearLayout>
 </android.support.v4.widget.SwipeRefreshLayout>

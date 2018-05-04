@@ -1,1 +1,1 @@
-include ':app', ':looney', ':st-devices', ':yanshi'
+include ':app', ':looney', ':st-devices'

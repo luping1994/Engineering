@@ -40,7 +40,7 @@ public class CommonFunc {
 			return;
 		searchdevcb.onSuccess(code, message);
 	}
-	public void failureCBmDNS(int code, String message, SearchDeviceCallBack searchdevcb) {
+	public void failureCBmDNS(int code, String message,SearchDeviceCallBack searchdevcb) {
 		if (null == searchdevcb)
 			return;
 		searchdevcb.onFailure(code, message);

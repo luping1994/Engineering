@@ -1,5 +1,7 @@
 package net.suntrans.engineering.easylink;
 
+import android.support.annotation.NonNull;
+
 import com.google.gson.annotations.SerializedName;
 
 /**
@@ -7,7 +9,7 @@ import com.google.gson.annotations.SerializedName;
  * Des:
  */
 
-public class DeviceInfo {
+public class DeviceInfo implements Comparable<DeviceInfo>{
 
 
     /**
@@ -35,4 +37,10 @@ public class DeviceInfo {
     public String Protocol;
     public String Manufacturer;
     public String Seed;
+
+    @Override
+    public int compareTo(@NonNull DeviceInfo o) {
+
+        return  this.Name.compareTo(o.Name);
+    }
 }

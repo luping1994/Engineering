@@ -5,6 +5,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import net.suntrans.building.BasedActivity;
+import net.suntrans.engineering.Config;
 import net.suntrans.engineering.R;
 import net.suntrans.engineering.bean.SixSwitchItem;
 import net.suntrans.engineering.bean.TenSwitchItem;
@@ -23,7 +24,6 @@ import java.util.ArrayList;
 
 public class SLC6ControlActivity extends BasedActivity {
     private TextView titleTx;
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,11 +45,11 @@ public class SLC6ControlActivity extends BasedActivity {
             }
         });
         String type = getIntent().getStringExtra("type");
-        if (type.equals("4300")) {
+        if (Config.CODE_ST_SLC_6.equals(type)) {
             ArrayList<SixSwitchItem> datas = new ArrayList<>();
             for (int i = 1; i <= 6; i++) {
                 SixSwitchItem item = new SixSwitchItem();
-                item.setName("未命名");
+                item.setName(getString(R.string.not_named));
                 item.setRSaddr("00000000");
                 item.setChannel(i + "");
                 item.setState("0");
@@ -61,11 +61,11 @@ public class SLC6ControlActivity extends BasedActivity {
             }
             SixControl_fragment fragment = SixControl_fragment.newInstance(datas, ip, port);
             getSupportFragmentManager().beginTransaction().replace(R.id.content, fragment).commit();
-        }else if (type.equals("4100")){
+        }else if (Config.CODE_ST_SLC_10.equals(type)){
             ArrayList<TenSwitchItem> datas = new ArrayList<>();
             for (int i = 1; i <= 10; i++) {
                 TenSwitchItem item = new TenSwitchItem();
-                item.setName("未命名");
+                item.setName(getString(R.string.not_named));
                 item.setRSaddr("00000000");
                 item.setChannel(i + "");
                 item.setState("0");
@@ -76,6 +76,22 @@ public class SLC6ControlActivity extends BasedActivity {
                 datas.add(item);
             }
             TenControl_fragment fragment = TenControl_fragment.newInstance(datas, ip, port);
+            getSupportFragmentManager().beginTransaction().replace(R.id.content, fragment).commit();
+        }else if (Config.CODE_ST_SLC_3_2.equals(type)){
+            ArrayList<SixSwitchItem> datas = new ArrayList<>();
+            for (int i = 1; i <= 2; i++) {
+                SixSwitchItem item = new SixSwitchItem();
+                item.setName(getString(R.string.not_named));
+                item.setRSaddr("00000000");
+                item.setChannel(i + "");
+                item.setState("0");
+                item.setCloseCmd();
+                item.setOpenCmd();
+                item.setOpImageId(R.drawable.ic_bulb_on);
+                item.setCloseImageId(R.drawable.ic_bulb_off);
+                datas.add(item);
+            }
+            SixControl_fragment fragment = SixControl_fragment.newInstance(datas, ip, port);
             getSupportFragmentManager().beginTransaction().replace(R.id.content, fragment).commit();
         }
     }

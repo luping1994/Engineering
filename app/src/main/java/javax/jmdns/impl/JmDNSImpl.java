@@ -745,6 +745,7 @@ public class JmDNSImpl extends JmDNS implements DNSStatefulObject, DNSTaskStarte
         final ServiceInfoImpl info = this.resolveServiceInfo(type, name, "", persistent);
         this.waitForInfoData(info, timeout);
         return (info.hasData() ? info : null);
+//        return info;
     }
 
     ServiceInfoImpl resolveServiceInfo(String type, String name, String subtype, boolean persistent) {

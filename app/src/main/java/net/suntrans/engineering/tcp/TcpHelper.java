@@ -34,7 +34,6 @@ public class TcpHelper {
         IntentFilter filter = new IntentFilter("net.suntrans.www");
         this.activity.registerReceiver(broadcastReceiver, filter);
 
-
         Intent intent = new Intent(activity.getApplicationContext(), TcpService.class);    //指定要绑定的service
         intent.putExtra("ip", ip);
         intent.putExtra("port", port);

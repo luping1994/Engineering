@@ -9,7 +9,7 @@ public class LogUtil {
 
     private static final String TAG = "Engineering";
     // 是否显示Log消息
-    private static boolean isShow = DEBUG;
+    private static boolean isShow = false;
 
     public static boolean isShow() {
         return isShow;

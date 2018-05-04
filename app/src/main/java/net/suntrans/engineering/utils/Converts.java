@@ -211,11 +211,11 @@ public abstract class Converts {
      * @return byte[]
      */
     public static String HexString2Int(String s) {
-        s = s.replace(" ","");
+        s = s.replace(" ", "");
         String str = "";
         for (int i = 0; i < s.length(); i += 2) {
             String sub = s.substring(i, i + 2);
-            int s4 = Integer.parseInt(sub,16);
+            int s4 = Integer.parseInt(sub, 16);
             str = str + s4;
         }
         return str;
@@ -314,6 +314,16 @@ public abstract class Converts {
         char[] ch = string.toCharArray();
         for (int i = 0; i < ch.length; i++) {
             sb.append(Integer.valueOf(ch[i]).intValue()).append("");
+        }
+        return sb.toString();
+    }
+
+    public static String strToASCIIHex(String string) {
+        StringBuilder sb = new StringBuilder();
+        char[] ch = string.toCharArray();
+        for (int i = 0; i < ch.length; i++) {
+            int i1 = Integer.valueOf(ch[i]).intValue();
+            sb.append(Integer.toHexString(i1)).append("");
         }
         return sb.toString();
     }
@@ -455,7 +465,7 @@ public abstract class Converts {
     }
 
     public static String asciiToString(String value) {
-        value = value.replace(" ","");
+        value = value.replace(" ", "");
         StringBuffer sbu = new StringBuffer();
 
         for (int i = 0; i < value.length(); i += 2) {

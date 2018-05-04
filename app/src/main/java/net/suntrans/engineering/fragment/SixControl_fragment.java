@@ -21,6 +21,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
@@ -56,6 +57,7 @@ public class SixControl_fragment extends Fragment implements TcpHelper.OnReceive
     private int port;
     private String ip;
     private ProgressDialog connectDialog;
+    private TextView addr;
 
     public static SixControl_fragment newInstance(ArrayList<SixSwitchItem> datas, String ip, int port) {
         SixControl_fragment fragment = new SixControl_fragment();
@@ -118,6 +120,7 @@ public class SixControl_fragment extends Fragment implements TcpHelper.OnReceive
         shutdownDialog = new ProgressDialog(getActivity());
 
 
+        addr = view.findViewById(R.id.addr);
         ip = getArguments().getString("ip");
         port = getArguments().getInt("port");
         connectToServer(ip, port);
@@ -143,12 +146,16 @@ public class SixControl_fragment extends Fragment implements TcpHelper.OnReceive
 
     @Override
     public void onReceive(String content) {
-        LogUtil.i(TAG, content);
-        if (content.equals("与服务器连接失败,重连中...") || content.equals("发送失败") || content.equals("连接中断")) {
-            UiUtils.showToast(content);
-            return;
+        try {
+            LogUtil.i(TAG, content);
+            if (content.equals("与服务器连接失败,重连中...") || content.equals("发送失败") || content.equals("连接中断")) {
+                UiUtils.showToast(content);
+                return;
+            }
+            parseSwitchData(content);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        parseSwitchData(content);
         handler.sendEmptyMessage(MSG_STOP_REFRESH);
     }
 
@@ -361,6 +368,19 @@ public class SixControl_fragment extends Fragment implements TcpHelper.OnReceive
         if (!s.substring(s.length()-4,s.length()).equals("0d0a")){
             return;
         }
+
+        String addrStr = s.substring(8, 16);
+        LogUtil.i(TAG,addrStr);
+
+        String s2 = Converts.reverse32HexString(addrStr);
+        LogUtil.i(TAG,s2);
+
+        String i1 = Integer.parseInt(s2, 16)+"";
+        i1 =   Converts.paddingHexString(i1,4);
+         s2 = Converts.reverse32HexString(s2);
+        addr.setText(String.format(getContext().getString(R.string.addr),s2,i1));
+
+
         String s1 = s.substring(22, 24);
         String[] states = {"0", "0", "0", "0", "0", "0"};   //6个通道的状态，state[0]对应1通道
         byte[] a = Converts.HexString2Bytes(s1);

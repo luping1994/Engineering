@@ -9,8 +9,6 @@ import net.suntrans.engineering.Config;
 import net.suntrans.engineering.R;
 import net.suntrans.engineering.fragment.SixParamFragment;
 import net.suntrans.engineering.fragment.TenParamFragment;
-import net.suntrans.engineering.tcp.TcpHelper;
-import net.suntrans.engineering.utils.LogUtil;
 
 import org.jetbrains.annotations.Nullable;
 
@@ -48,10 +46,10 @@ public class ParamActivity extends BasedActivity  {
         String ip = getIntent().getStringExtra("ip");
         int port = getIntent().getIntExtra("port",8899);
         type = getIntent().getStringExtra("type");
-        if (Config.TYPE_SLC_6.equals(type)){
+        if (Config.CODE_ST_SLC_6.equals(type)){
             SixParamFragment fragment = SixParamFragment.newInstance(ip,port);
             getSupportFragmentManager().beginTransaction().replace(R.id.content,fragment).commit();
-        }else if (Config.TYPE_SLC_10.equals(type)){
+        }else if (Config.CODE_ST_SLC_10.equals(type)){
             TenParamFragment fragment = TenParamFragment.newInstance(ip,port);
             getSupportFragmentManager().beginTransaction().replace(R.id.content,fragment).commit();
         }

@@ -7,6 +7,7 @@ import android.support.multidex.MultiDex;
 import android.support.multidex.MultiDexApplication;
 
 import com.squareup.leakcanary.LeakCanary;
+import com.tencent.bugly.Bugly;
 
 
 /**
@@ -42,6 +43,8 @@ public class App extends MultiDexApplication {
         }
         LeakCanary.install(this);
 //        YanshiApp.init(this);
+
+        Bugly.init(this,"3be76da92b",false);
     }
     /**
      * 分割 Dex 支持 * @param base

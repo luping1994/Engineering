@@ -19,7 +19,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="请按下复位按钮" />
+            android:text="正在发送SSID和密码" />
     </LinearLayout>
 
   <RelativeLayout

@@ -37,10 +37,10 @@ ext {
     minSdkVersion = 14
     targetSdkVersion = 25
     compileSdkVersion = 26
-    buildToolsVersion = '26.0.2'
+    buildToolsVersion = '23.0.2'
 
     // App dependencies
-    supportLibraryVersion = '26.1.0'
+    supportLibraryVersion = '23.+'
     guavaVersion = '18.0'
     junitVersion = '4.12'
     runnerVersion = '0.5'

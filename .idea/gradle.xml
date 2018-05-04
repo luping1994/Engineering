@@ -11,7 +11,6 @@
             <option value="$PROJECT_DIR$/app" />
             <option value="$PROJECT_DIR$/looney" />
             <option value="$PROJECT_DIR$/st-devices" />
-            <option value="$PROJECT_DIR$/yanshi" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />

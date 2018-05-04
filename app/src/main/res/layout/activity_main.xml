@@ -11,7 +11,6 @@
         <include layout="@layout/status_bar_fix" />
 
 
-
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="?actionBarSize"
@@ -57,21 +56,42 @@
 
         </RelativeLayout>
 
+
         <View
+            android:background="#f5f5f5"
             android:layout_width="match_parent"
-            android:layout_height="16dp"
-            android:background="#f5f5f5" />
-
-        <RelativeLayout
+            android:layout_height="20dp"/>
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/recyclerView"
+            <EditText
+                android:visibility="gone"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                app:layoutManager="LinearLayoutManager"
-                app:spanCount="1" />
+                android:layout_height="35dp"
+                android:background="#f5f5f5"
+                android:hint="搜索"
+                android:paddingLeft="16dp"
+                android:textSize="14sp" />
+
+            <android.support.v4.widget.SwipeRefreshLayout
+                android:id="@+id/refreshlayout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <android.support.v7.widget.RecyclerView
+                    android:scrollbarSize="4dp"
+                    android:scrollbarStyle="insideOverlay"
+                    android:scrollbars="vertical"
+                    android:id="@+id/recyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:layoutManager="LinearLayoutManager"
+                    app:spanCount="1" />
+
+            </android.support.v4.widget.SwipeRefreshLayout>
+
 
             <ProgressBar
                 android:id="@+id/progressBar"
@@ -79,7 +99,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:visibility="gone" />
-        </RelativeLayout>
+        </LinearLayout>
 
     </LinearLayout>
 

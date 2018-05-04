@@ -21,6 +21,7 @@ import net.suntrans.engineering.databinding.ActivityAutolinkBinding;
 import net.suntrans.engineering.utils.UiUtils;
 
 import io.fogcloud.sdk.easylink.api.EasyLink;
+import io.fogcloud.sdk.easylink.api.EasylinkP2P;
 import io.fogcloud.sdk.easylink.helper.EasyLinkCallBack;
 import io.fogcloud.sdk.easylink.helper.EasyLinkParams;
 
@@ -34,7 +35,7 @@ public class AutoLinkActivity extends BasedActivity {
     private EasyLink easyLink;
     private ActivityAutolinkBinding binding;
     private AlertDialog dialog;
-//    private EasylinkP2P easylinkP2P;
+    private EasylinkP2P easylinkP2P;
 
 
     @Override
@@ -61,7 +62,7 @@ public class AutoLinkActivity extends BasedActivity {
             public void onClick(View v) {
                 if (TextUtils.isEmpty(binding.ssid.getText().toString())||TextUtils.isEmpty(binding.password.getText().toString()))
                 {
-                    UiUtils.showToast("请确认SSID和密码");
+                    UiUtils.showToast(getString(R.string.tips_contain_ssid_password));
                     return;
                 }
                 binding.start.setEnabled(false);
@@ -91,8 +92,7 @@ public class AutoLinkActivity extends BasedActivity {
 
         params.ssid = ssid;
         params.password = password;
-        params.runSecond = 60000;
-        params.sleeptime = 20;
+
 
         App.getSharedPreferences()
                 .edit()
@@ -133,7 +133,7 @@ public class AutoLinkActivity extends BasedActivity {
     }
 
     private void stopEasyLink() {
-
+//
         easyLink.stopEasyLink(new EasyLinkCallBack() {
             @Override
             public void onSuccess(int code, String message) {
