@@ -1,6 +1,7 @@
 package net.suntrans.engineering.activity;
 
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.view.View;
 import android.widget.TextView;
 
@@ -24,6 +25,7 @@ import java.util.ArrayList;
 
 public class SLC6ControlActivity extends BasedActivity {
     private TextView titleTx;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,6 +47,8 @@ public class SLC6ControlActivity extends BasedActivity {
             }
         });
         String type = getIntent().getStringExtra("type");
+
+        Fragment fragment = null;
         if (Config.CODE_ST_SLC_6.equals(type)) {
             ArrayList<SixSwitchItem> datas = new ArrayList<>();
             for (int i = 1; i <= 6; i++) {
@@ -52,6 +56,7 @@ public class SLC6ControlActivity extends BasedActivity {
                 item.setName(getString(R.string.not_named));
                 item.setRSaddr("00000000");
                 item.setChannel(i + "");
+                item.setType(type);
                 item.setState("0");
                 item.setCloseCmd();
                 item.setOpenCmd();
@@ -59,9 +64,8 @@ public class SLC6ControlActivity extends BasedActivity {
                 item.setCloseImageId(R.drawable.ic_bulb_off);
                 datas.add(item);
             }
-            SixControl_fragment fragment = SixControl_fragment.newInstance(datas, ip, port);
-            getSupportFragmentManager().beginTransaction().replace(R.id.content, fragment).commit();
-        }else if (Config.CODE_ST_SLC_10.equals(type)){
+            fragment = SixControl_fragment.newInstance(datas, ip, port, type);
+        } else if (Config.CODE_ST_SLC_10.equals(type)) {
             ArrayList<TenSwitchItem> datas = new ArrayList<>();
             for (int i = 1; i <= 10; i++) {
                 TenSwitchItem item = new TenSwitchItem();
@@ -69,15 +73,15 @@ public class SLC6ControlActivity extends BasedActivity {
                 item.setRSaddr("00000000");
                 item.setChannel(i + "");
                 item.setState("0");
+
                 item.setCloseCmd();
                 item.setOpenCmd();
                 item.setOpImageId(R.drawable.ic_bulb_on);
                 item.setCloseImageId(R.drawable.ic_bulb_off);
                 datas.add(item);
             }
-            TenControl_fragment fragment = TenControl_fragment.newInstance(datas, ip, port);
-            getSupportFragmentManager().beginTransaction().replace(R.id.content, fragment).commit();
-        }else if (Config.CODE_ST_SLC_3_2.equals(type)){
+            fragment = TenControl_fragment.newInstance(datas, ip, port);
+        } else if (Config.CODE_ST_SLC_3_2.equals(type)) {
             ArrayList<SixSwitchItem> datas = new ArrayList<>();
             for (int i = 1; i <= 2; i++) {
                 SixSwitchItem item = new SixSwitchItem();
@@ -85,15 +89,35 @@ public class SLC6ControlActivity extends BasedActivity {
                 item.setRSaddr("00000000");
                 item.setChannel(i + "");
                 item.setState("0");
+                item.setType(type);
+
                 item.setCloseCmd();
                 item.setOpenCmd();
                 item.setOpImageId(R.drawable.ic_bulb_on);
                 item.setCloseImageId(R.drawable.ic_bulb_off);
                 datas.add(item);
             }
-            SixControl_fragment fragment = SixControl_fragment.newInstance(datas, ip, port);
-            getSupportFragmentManager().beginTransaction().replace(R.id.content, fragment).commit();
+            fragment = SixControl_fragment.newInstance(datas, ip, port, type);
+        } else if (Config.CODE_ST_SLC_2PLUS.equals(type)) {
+            ArrayList<SixSwitchItem> datas = new ArrayList<>();
+            for (int i = 1; i <= 2; i++) {
+                SixSwitchItem item = new SixSwitchItem();
+                item.setName(getString(R.string.not_named));
+                item.setRSaddr("00000000");
+                item.setChannel(i + "");
+                item.setState("0");
+                item.setType(type);
+                item.setCloseCmd();
+                item.setOpenCmd();
+                item.setOpImageId(R.drawable.ic_bulb_on);
+                item.setCloseImageId(R.drawable.ic_bulb_off);
+                datas.add(item);
+            }
+            fragment = SixControl_fragment.newInstance(datas, ip, port, type);
         }
+        if (fragment != null)
+            getSupportFragmentManager().beginTransaction().replace(R.id.content, fragment).commit();
+
     }
 
 

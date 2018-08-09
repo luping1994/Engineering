@@ -1,13 +1,18 @@
 package net.suntrans.engineering;
 
 import android.app.Application;
+import android.content.ComponentName;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.support.multidex.MultiDex;
 import android.support.multidex.MultiDexApplication;
 
 import com.squareup.leakcanary.LeakCanary;
 import com.tencent.bugly.Bugly;
+
+import net.suntrans.engineering.usbTranslate.UsbTranslateService;
 
 
 /**
@@ -35,6 +40,8 @@ public class App extends MultiDexApplication {
     @Override
     public void onCreate() {
         super.onCreate();
+
+
         application = this;
         if (LeakCanary.isInAnalyzerProcess(this)) {
             // This process is dedicated to LeakCanary for heap analysis.
@@ -43,8 +50,9 @@ public class App extends MultiDexApplication {
         }
         LeakCanary.install(this);
 //        YanshiApp.init(this);
-
         Bugly.init(this,"3be76da92b",false);
+        startService(new Intent(this, UsbTranslateService.class));
+
     }
     /**
      * 分割 Dex 支持 * @param base

@@ -12,11 +12,25 @@ import net.suntrans.engineering.utils.Converts;
  */
 
 public class SixSwitchItem implements Parcelable {
+
+
     private String name;
     private String RSaddr;
+    private String type;
     private String channel;
     private String state;
     private int imgId;
+
+
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
     private int opImageId;
     private int closeImageId;
 
@@ -117,7 +131,7 @@ public class SixSwitchItem implements Parcelable {
         String order = "";
         int channeOrder = 0x01;
         String s = getChannelString(channeOrder<<(Integer.valueOf(getChannel())-1));
-        order = "AB 68 43 00 " + getRSaddr() + "03 D2 00"+s+s;
+        order = "AB 68 "+type + getRSaddr() + "03 D2 00"+s+s;
         order =getSwitchOrder(order);
         this.openCmd = order;
     }
@@ -127,7 +141,7 @@ public class SixSwitchItem implements Parcelable {
         String order = "";
         int channeOrder = 0x01;
         String s = getChannelString(channeOrder<<(Integer.valueOf(getChannel())-1));
-        order = "AB 68 43 00 " + getRSaddr() + "03 D2 00"+s+"0000";
+        order = "AB 68 "+type  + getRSaddr() + "03 D2 00"+s+"0000";
         order =getSwitchOrder(order);
         this.closeCmd = order;
     }
@@ -177,60 +191,6 @@ public class SixSwitchItem implements Parcelable {
     public SixSwitchItem() {
     }
 
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(this.name);
-        dest.writeString(this.RSaddr);
-        dest.writeString(this.channel);
-        dest.writeString(this.state);
-        dest.writeInt(this.imgId);
-        dest.writeInt(this.opImageId);
-        dest.writeInt(this.closeImageId);
-        dest.writeString(this.zhilianip);
-        dest.writeString(this.zhilianport);
-        dest.writeString(this.waiwangip);
-        dest.writeString(this.waiwangport);
-        dest.writeString(this.bendiip);
-        dest.writeString(this.bendiport);
-        dest.writeString(this.openCmd);
-        dest.writeString(this.closeCmd);
-    }
-
-    protected SixSwitchItem(Parcel in) {
-        this.name = in.readString();
-        this.RSaddr = in.readString();
-        this.channel = in.readString();
-        this.state = in.readString();
-        this.imgId = in.readInt();
-        this.opImageId = in.readInt();
-        this.closeImageId = in.readInt();
-        this.zhilianip = in.readString();
-        this.zhilianport = in.readString();
-        this.waiwangip = in.readString();
-        this.waiwangport = in.readString();
-        this.bendiip = in.readString();
-        this.bendiport = in.readString();
-        this.openCmd = in.readString();
-        this.closeCmd = in.readString();
-    }
-
-    public static final Creator<SixSwitchItem> CREATOR = new Creator<SixSwitchItem>() {
-        @Override
-        public SixSwitchItem createFromParcel(Parcel source) {
-            return new SixSwitchItem(source);
-        }
-
-        @Override
-        public SixSwitchItem[] newArray(int size) {
-            return new SixSwitchItem[size];
-        }
-    };
-
 
     private String getSwitchOrder(String order) {
         byte[] bt = Converts.HexString2Bytes(order.replace(" ", ""));
@@ -252,4 +212,59 @@ public class SixSwitchItem implements Parcelable {
     }
 
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.name);
+        dest.writeString(this.RSaddr);
+        dest.writeString(this.type);
+        dest.writeString(this.channel);
+        dest.writeString(this.state);
+        dest.writeInt(this.imgId);
+        dest.writeInt(this.opImageId);
+        dest.writeInt(this.closeImageId);
+        dest.writeString(this.zhilianip);
+        dest.writeString(this.zhilianport);
+        dest.writeString(this.waiwangip);
+        dest.writeString(this.waiwangport);
+        dest.writeString(this.bendiip);
+        dest.writeString(this.bendiport);
+        dest.writeString(this.openCmd);
+        dest.writeString(this.closeCmd);
+    }
+
+    protected SixSwitchItem(Parcel in) {
+        this.name = in.readString();
+        this.RSaddr = in.readString();
+        this.type = in.readString();
+        this.channel = in.readString();
+        this.state = in.readString();
+        this.imgId = in.readInt();
+        this.opImageId = in.readInt();
+        this.closeImageId = in.readInt();
+        this.zhilianip = in.readString();
+        this.zhilianport = in.readString();
+        this.waiwangip = in.readString();
+        this.waiwangport = in.readString();
+        this.bendiip = in.readString();
+        this.bendiport = in.readString();
+        this.openCmd = in.readString();
+        this.closeCmd = in.readString();
+    }
+
+    public static final Parcelable.Creator<SixSwitchItem> CREATOR = new Parcelable.Creator<SixSwitchItem>() {
+        @Override
+        public SixSwitchItem createFromParcel(Parcel source) {
+            return new SixSwitchItem(source);
+        }
+
+        @Override
+        public SixSwitchItem[] newArray(int size) {
+            return new SixSwitchItem[size];
+        }
+    };
 }

@@ -23,8 +23,9 @@ public class RetrofitHelper {
 
     private static Api api;
     //public static final String BASE_URL = "http://www.suntrans.net:8956";
-    public static final String BASE_URL = "http://appone.suntrans.net/api.php/";
-    public static final String BASE_URL2 = "http://tit.suntrans-cloud.com/";
+//    public static final String BASE_URL = "http://appone.suntrans.net/api.php/";
+    public static final String BASE_URL = "http://hm.suntrans-cloud.com/appone/api.php/";
+    public static final String BASE_URL2 = "http://hm.suntrans-cloud.com/appone/api.php/";
 
     private static OkHttpClient mOkHttpClient;
 
@@ -34,7 +35,7 @@ public class RetrofitHelper {
 
     public static Api getLoginApi() {
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(BASE_URL2)
+                .baseUrl(BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                 .build();

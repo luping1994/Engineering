@@ -38,17 +38,19 @@ class HostActivity : BasedActivity(), TcpHelper.OnReceivedListener {
     private var data: List<ProConfig.DataBean>? = null
     private var helper: TcpHelper? = null
     private var type: String? = null
+    private var code: String? = null
 
 
     private var dialog: LoadingDialog? = null
 
     //wifi模块重启命令
-    private val rebootOrder = "AB 68 43 00 00 00 00 00 03 03 00 04 00 00 00 CA EB 0D 0A"
+    private var rebootOrder = "00 00 00 00 03 03 00 04 00 00 00"
     private var order: String? = null
 
 
-    private var refreshLayout: SwipeRefreshLayout? = null;
+    private var refreshLayout: SwipeRefreshLayout? = null
     private var selectedPos = 0
+    private var currentType:String=""
 
     private val handler = Handler()
 
@@ -62,6 +64,7 @@ class HostActivity : BasedActivity(), TcpHelper.OnReceivedListener {
         titleTx = findViewById(R.id.title)
         val title = intent.getStringExtra("title")
         type = intent.getStringExtra("type")
+        code = intent.getStringExtra("code")
         titleTx!!.text = title
 
         spinner = findViewById(R.id.spinner)
@@ -111,7 +114,7 @@ class HostActivity : BasedActivity(), TcpHelper.OnReceivedListener {
 
     //发送设置远程服务器socket的命令
     private fun setRemoteIpPort() {
-        order = "43 00 00 00 00 00 03"
+//        order = "00 00 00 00 03"
         var ipHex = ""
         var portHex = ""
         var ipLength = ""
@@ -119,13 +122,18 @@ class HostActivity : BasedActivity(), TcpHelper.OnReceivedListener {
         var ip = ""
 
         var deviceBean = data!![selectedPos - 1].sub.filter {
-            it.dev_code == type
+            it.dev_type == code
         }
         if (deviceBean.isNotEmpty()) {
             ip = deviceBean[0].host
+            currentType=deviceBean[0].dev_type
+            order = deviceBean[0].dev_type+"00 00 00 00 03"
             portHex = Integer.toHexString(deviceBean[0].port)
         }else{
-            UiUtils.showToast("无法获取远程服务器地址")
+          if(dialog!!.isShowing){
+              dialog!!.dismiss()
+           }
+            UiUtils.showToast(getString(R.string.tips_not_sup_device))
             return
         }
 
@@ -133,6 +141,8 @@ class HostActivity : BasedActivity(), TcpHelper.OnReceivedListener {
 //        portHex = Integer.toHexString(9001)
 
         LogUtil.i("IP:" + ip)
+        LogUtil.i("order:" + order)
+
         portHex = getStringFormat(portHex, 8)
         ipHex = Converts.strToASCIIHex(ip)
 
@@ -268,6 +278,8 @@ class HostActivity : BasedActivity(), TcpHelper.OnReceivedListener {
                 dialog!!.dismiss()
             if (content != null && order!!.length == content.length
                     && order!!.substring(order!!.length - 4, order!!.length) == content.substring(content.length - 4, content.length)) {
+                rebootOrder=currentType+rebootOrder
+                rebootOrder = Converts.getOrderWithCrc(rebootOrder)
                 handler.postDelayed({
                     if (helper!!.binder != null)
                         helper!!.binder.sendOrder(rebootOrder)

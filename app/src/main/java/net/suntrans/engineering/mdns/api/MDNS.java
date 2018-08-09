@@ -312,23 +312,18 @@ public class MDNS {
         @Override
         public void serviceResolved(ServiceEvent event) {
             if (!jsonmap.containsKey(event.getName())) {
-
                 sName = event.getInfo();
                 LogUtil.i("serviceResolved:" + event.getName());
                 if (null != sName) {
-
                     // 截取byte数组
                     ArrayList<String> mDNSList = new ArrayList();
-
                     byte[] allinfobyte = sName.getTextBytes();
                     int allLen = allinfobyte.length;
                     for (int index = 0; index < allLen; ) {
-
                         int infoLength = allinfobyte[index++];
                         byte[] temp = new byte[infoLength];
                         System.arraycopy(allinfobyte, index, temp, 0,
                                 infoLength);
-
                         try {
                             String isoString = new String(temp, "UTF-8");
                             mDNSList.add(isoString);
@@ -336,7 +331,6 @@ public class MDNS {
                         } catch (UnsupportedEncodingException e) {
                             e.printStackTrace();
                         }
-
                         index += infoLength;
                     }
 
@@ -350,7 +344,6 @@ public class MDNS {
                         Inet4Address[] ipv4 = sName.getInet4Addresses();
                         if (ipv4.length > 0) {
                             dev_ip = ipv4[0].toString();
-
                             int isOtherStr = dev_ip.indexOf("/");
                             if (isOtherStr > -1) {
                                 dev_ip = dev_ip.substring(isOtherStr + 1);
@@ -367,7 +360,7 @@ public class MDNS {
                                 jsonObject.put(temp[0], temp[1]);
                             }
                         }
-                        // Log.d("---HomeFragment---", event.getName());
+                        //Log.d("---HomeFragment---", event.getName());
                         jsonmap.put(event.getName(), jsonObject);
 
                     } catch (JSONException e) {

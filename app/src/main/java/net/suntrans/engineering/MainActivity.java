@@ -36,7 +36,6 @@ import net.suntrans.engineering.utils.RxTimerUtil;
 import net.suntrans.engineering.utils.UiUtils;
 import net.suntrans.looney.widgets.IosAlertDialog;
 
-import org.eclipse.jetty.servlet.listener.ELContextCleaner;
 import org.json.JSONArray;
 import org.json.JSONException;
 
@@ -61,6 +60,7 @@ import me.weyye.hipermission.PermissonItem;
 import static net.suntrans.engineering.Config.EWM_SERVICE;
 import static net.suntrans.engineering.Config.ST_SLC_10;
 import static net.suntrans.engineering.Config.ST_SLC_6;
+import static net.suntrans.engineering.Config.ST_SRD;
 import static net.suntrans.engineering.Config.ST_Sensus;
 
 public class MainActivity extends BasedActivity {
@@ -99,7 +99,6 @@ public class MainActivity extends BasedActivity {
         binding.refreshlayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-
                 handler.postDelayed(new Runnable() {
                     @Override
                     public void run() {
@@ -108,11 +107,8 @@ public class MainActivity extends BasedActivity {
                 }, 1000);
             }
         });
-
 //        startJmdns();
-
         PgyUpdateManager.register(this, Config.FILE_PROVIDER);
-
         checkWritePermission();
     }
 
@@ -157,16 +153,13 @@ public class MainActivity extends BasedActivity {
 
     private void search() {
         try {
-
             if (wm == null)
                 wm = (WifiManager) getApplicationContext().getSystemService(android.content.Context.WIFI_SERVICE);
             lock = wm.createMulticastLock(getClass().getSimpleName());
             lock.setReferenceCounted(true);
             lock.acquire();//to receive multicast packets
-
             listener = new SimpleListener();
             jmDNS.addServiceListener(Config.EWM_SERVICE, listener);
-
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -282,20 +275,32 @@ public class MainActivity extends BasedActivity {
                     intent.putExtra("port", datas.get(position).Port);
                     if (datas.get(position).Name.contains(Config.ST_SLC_6)) {
                         intent.putExtra("type", Config.ST_SLC_6);
+                        intent.putExtra("code", Config.CODE_ST_SLC_6);
                     } else if (datas.get(position).Name.contains(Config.ST_SLC_10)) {
                         intent.putExtra("type", Config.ST_SLC_10);
+                        intent.putExtra("code", Config.CODE_ST_SLC_10);
                     } else if (datas.get(position).Name.contains(Config.ST_Sensus)) {
                         intent.putExtra("type", Config.ST_Sensus);
+                        intent.putExtra("code", Config.CODE_SENSUS);
                     } else if (datas.get(position).Name.contains(Config.ST_SLC_3_2)) {
                         intent.putExtra("type", Config.ST_SLC_3_2);
-                    }else if (datas.get(position).Name.contains(Config.ST_SRD)) {
+                        intent.putExtra("code", Config.CODE_ST_SLC_3_2);
+                    } else if (datas.get(position).Name.contains(Config.ST_SRD)) {
                         intent.putExtra("type", Config.ST_SRD);
-                    }else if (datas.get(position).Name.contains(Config.ST_ITL)) {
+                        intent.putExtra("code", Config.CODE_ST_SRD);
+                    } else if (datas.get(position).Name.contains(Config.ST_ITL)) {
                         intent.putExtra("type", Config.ST_ITL);
-                    }else if (datas.get(position).Name.contains(Config.ST_SECC)) {
+
+                    } else if (datas.get(position).Name.contains(Config.ST_SECC)) {
                         intent.putExtra("type", Config.ST_SECC);
-                    }else {
-                        UiUtils.showToast(getString(R.string.tips_not_sup_device));
+                        intent.putExtra("code", Config.CODE_ST_SECC);
+                    }else if (datas.get(position).Name.contains(Config.ST_SECC)) {
+                        intent.putExtra("type", Config.ST_SLC_2);
+                        intent.putExtra("code", Config.CODE_ST_SLC_2);
+                    }else if (datas.get(position).Name.contains(Config.ST_SLC_2PLUS)) {
+                        intent.putExtra("type", Config.ST_SLC_2PLUS);
+                        intent.putExtra("code", Config.CODE_ST_SLC_2PLUS);
+                    } else {
                         return;
                     }
                     startActivity(intent);
@@ -305,9 +310,9 @@ public class MainActivity extends BasedActivity {
                     intent.putExtra("ip", datas.get(position).IP);
                     intent.putExtra("port", datas.get(position).Port);
                     if (datas.get(position).Name.contains(Config.ST_SLC_6)) {
-                        intent.putExtra("type", Config.CODE_ST_SLC_6);
+                        intent.putExtra("type", Config.ST_SLC_6);
                     } else if (datas.get(position).Name.contains(Config.ST_SLC_10)) {
-                        intent.putExtra("type", Config.CODE_ST_SLC_10);
+                        intent.putExtra("type", Config.ST_SLC_10);
                     }
                     startActivity(intent);
                 } else {
@@ -327,7 +332,7 @@ public class MainActivity extends BasedActivity {
                 if (datas.get(position).Name.contains(ST_SLC_6)) {
 
                     Intent intent = new Intent(MainActivity.this, SLC6ControlActivity.class);
-                    intent.putExtra("type", "4300");
+                    intent.putExtra("type", Config.CODE_ST_SLC_6);
                     intent.putExtra("ip", datas.get(position).IP);
                     intent.putExtra("port", datas.get(position).Port);
                     intent.putExtra("title", datas.get(position).Name);
@@ -336,28 +341,33 @@ public class MainActivity extends BasedActivity {
                 } else if (datas.get(position).Name.contains(ST_SLC_10)) {
 
                     Intent intent = new Intent(MainActivity.this, SLC6ControlActivity.class);
-                    intent.putExtra("type", "4100");
+                    intent.putExtra("type", Config.CODE_ST_SLC_10);
                     intent.putExtra("ip", datas.get(position).IP);
                     intent.putExtra("port", datas.get(position).Port);
                     intent.putExtra("title", datas.get(position).Name);
                     startActivity(intent);
 
                 } else if (datas.get(position).Name.contains(ST_Sensus)) {
-
                     Intent intent = new Intent(MainActivity.this, SensusActivity.class);
-                    intent.putExtra("type", "6300");
+                    intent.putExtra("type", Config.CODE_SENSUS);
                     intent.putExtra("ip", datas.get(position).IP);
                     intent.putExtra("port", datas.get(position).Port);
                     intent.putExtra("title", datas.get(position).Name);
                     startActivity(intent);
                 } else if (datas.get(position).Name.contains(Config.ST_SLC_3_2)) {
                     Intent intent = new Intent(MainActivity.this, SLC6ControlActivity.class);
-                    intent.putExtra("type", "4300");
+                    intent.putExtra("type", Config.CODE_ST_SLC_3_2);
                     intent.putExtra("ip", datas.get(position).IP);
                     intent.putExtra("port", datas.get(position).Port);
                     intent.putExtra("title", datas.get(position).Name);
                     startActivity(intent);
-
+                } else if (datas.get(position).Name.contains(Config.ST_SLC_2PLUS)) {
+                    Intent intent = new Intent(MainActivity.this, SLC6ControlActivity.class);
+                    intent.putExtra("type", Config.CODE_ST_SLC_2PLUS);
+                    intent.putExtra("ip", datas.get(position).IP);
+                    intent.putExtra("port", datas.get(position).Port);
+                    intent.putExtra("title", datas.get(position).Name);
+                    startActivity(intent);
                 }
 
 
@@ -375,28 +385,6 @@ public class MainActivity extends BasedActivity {
 
     //发现设备搜索线程
     private void searchThreadStart() {
-//        new Thread(new Runnable() {
-//            @Override
-//            public void run() {
-//                while (!stoped) {
-//                    try {
-//                        if (isStarted)
-//                            return;
-//                        if (jmDNS != null && localIpAddress != null) {
-//                            startDeviceSearch();
-//                            Thread.sleep(3000L);
-//                            continue;
-//                        }
-//                        localIpAddress = getLocalIpAddress();
-//                        if (jmDNS == null)
-//                            jmDNS = JmDNS.create(localIpAddress);
-//                    } catch (Exception e) {
-//                        e.printStackTrace();
-//                    }
-//                }
-//            }
-//        })
-//                .start();
 
         mdns = new MDNS(this.getApplicationContext());
         mdns.startSearchDevices(EWM_SERVICE, new SearchDeviceCallBack() {
@@ -495,11 +483,16 @@ public class MainActivity extends BasedActivity {
                 resID = R.drawable.ic_liutongdao;
             } else if (item.Name.contains(ST_Sensus)) {
                 resID = R.drawable.diliugan;
+            } else if (item.Name.contains(ST_SRD)) {
+                resID = R.drawable.srd;
+
+            } else if (item.Name.contains(Config.ST_SLC_3_2)) {
+                resID = R.drawable.ic_32;
+
             }
 
             helper.addOnClickListener(R.id.host)
                     .addOnClickListener(R.id.canshu);
-
             Glide.with(MainActivity.this)
                     .load(resID)
                     .dontTransform()

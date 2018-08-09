@@ -56,15 +56,17 @@ public class SixControl_fragment extends Fragment implements TcpHelper.OnReceive
 
     private int port;
     private String ip;
+    private String type;
     private ProgressDialog connectDialog;
     private TextView addr;
 
-    public static SixControl_fragment newInstance(ArrayList<SixSwitchItem> datas, String ip, int port) {
+    public static SixControl_fragment newInstance(ArrayList<SixSwitchItem> datas, String ip, int port,String type) {
         SixControl_fragment fragment = new SixControl_fragment();
         Bundle bundle = new Bundle();
         bundle.putParcelableArrayList("datas", datas);
         bundle.putString("ip", ip);
         bundle.putInt("port", port);
+        bundle.putString("type", type);
         fragment.setArguments(bundle);
         return fragment;
     }
@@ -132,6 +134,7 @@ public class SixControl_fragment extends Fragment implements TcpHelper.OnReceive
     private List<SixSwitchItem> getListDataSet() {
         datas = getArguments().getParcelableArrayList("datas");
         this.ip = getArguments().getString("ip");
+        this.type = getArguments().getString("type");
         this.port = getArguments().getInt("port");
         addrs = new ArrayList<>();
         for (SixSwitchItem item :
@@ -197,7 +200,7 @@ public class SixControl_fragment extends Fragment implements TcpHelper.OnReceive
         protected String doInBackground(Void... params) {
             for (int i = 0; i < addrs.size(); i++) {
                 String addr = addrs.get(i);
-                String order = "ab 68" + "43 00" + addr + "01" + "97 00" + "00 00 00 00";
+                String order = "ab 68" + type + addr + "01" + "97 00" + "00 00 00 00";
 //                String order = "aa68" + addr + "03 0100" + "0007";
                 order = getOrder(order);
                 helper.binder.sendOrder(order);
@@ -362,7 +365,7 @@ public class SixControl_fragment extends Fragment implements TcpHelper.OnReceive
 
         if (s.length() < 24)
             return;
-        if (!s.substring(4, 8).equals("4300")) {
+        if (!s.substring(4, 8).equals(type)) {
             return;
         }
         if (!s.substring(s.length()-4,s.length()).equals("0d0a")){

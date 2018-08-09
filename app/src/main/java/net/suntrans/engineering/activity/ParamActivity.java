@@ -18,10 +18,8 @@ import org.jetbrains.annotations.Nullable;
  */
 
 public class ParamActivity extends BasedActivity  {
-
     private String type;
     private TextView titleTx;
-
     private static final String TAG = "ParamActivity";
 
     @Override
@@ -42,16 +40,23 @@ public class ParamActivity extends BasedActivity  {
                         finish();
                     }
                 });
-
         String ip = getIntent().getStringExtra("ip");
         int port = getIntent().getIntExtra("port",8899);
         type = getIntent().getStringExtra("type");
-        if (Config.CODE_ST_SLC_6.equals(type)){
+        if (Config.ST_SLC_6.equals(type)){
+
             SixParamFragment fragment = SixParamFragment.newInstance(ip,port);
             getSupportFragmentManager().beginTransaction().replace(R.id.content,fragment).commit();
-        }else if (Config.CODE_ST_SLC_10.equals(type)){
+
+
+        }else if (Config.ST_SLC_10.equals(type)){
+
             TenParamFragment fragment = TenParamFragment.newInstance(ip,port);
             getSupportFragmentManager().beginTransaction().replace(R.id.content,fragment).commit();
+
+        }else if (Config.ST_SECC.equals(type)){
+
+
         }
     }
 

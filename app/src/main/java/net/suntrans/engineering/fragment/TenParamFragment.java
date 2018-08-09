@@ -423,17 +423,13 @@ public class TenParamFragment extends Fragment implements TcpHelper.OnReceivedLi
 
         settingOrder = "4100 0000 0000" +
                 "03";
-
         switch (id){
             case R.id.guoliuAll:
             case R.id.guoliuSingle:
                 settingOrder = settingOrder+ "4200" + guoliu;
-
                 break;
             case R.id.guoya:
-
                 settingOrder = settingOrder+ "4400" + guoya;
-
                 break;
             case R.id.qianya:
                 settingOrder = settingOrder+ "4300" + qianya;
@@ -450,6 +446,7 @@ public class TenParamFragment extends Fragment implements TcpHelper.OnReceivedLi
 
 
     private void setSettingParam() {
+
         String guoliuDan = binding.guoliuSingle.getText().toString();
         String guoliuALl = binding.guoliuAll.getText().toString();
         String guoyaTemp = binding.guoya.getText().toString();

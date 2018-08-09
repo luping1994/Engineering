@@ -3,22 +3,26 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="net.suntrans.engineering">
 
-    <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
     <uses-permission android:name="android.permission.CHANGE_WIFI_MULTICAST_STATE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="com.android.example.USB_PERMISSION" />
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <uses-feature
+        android:name="android.hardware.usb.host"
+        android:required="true" />
 
     <application
-        tools:replace="android:icon, android:allowBackup,android:theme"
         android:name=".App"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        tools:replace="android:icon, android:allowBackup,android:theme">
         <meta-data
             android:name="PGYER_APPID"
             android:value="86cdf740c8b687453a3066bf1811c8ba" />
@@ -31,23 +35,38 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/provider_paths" />
         </provider>
-        <activity android:name=".MainActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+        <activity android:name=".MainActivity">
+
         </activity>
         <activity
-            android:windowSoftInputMode="adjustPan"
             android:name=".activity.AutoLinkActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan" />
         <activity android:name=".activity.HostActivity" />
         <activity android:name=".activity.SLC6ControlActivity" />
         <activity android:name=".activity.ParamActivity" />
         <activity android:name=".activity.SensusActivity" />
+        <activity android:name=".activity.LoginActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
+        </activity>
+        <activity android:name=".activity.LoginActivity2">
+
+        </activity>
 
         <service android:name=".tcp.TcpService" />
+        <service android:name=".usbTranslate.UsbTranslateService">
+            <intent-filter>
+                <action android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED" />
+            </intent-filter>
+            <meta-data
+                android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED"
+                android:resource="@xml/usbfilter"></meta-data>
+        </service>
     </application>
 
 </manifest>

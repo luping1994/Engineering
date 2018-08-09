@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.databinding.DataBindingUtil;
 import android.net.NetworkInfo;
+import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -19,6 +20,8 @@ import net.suntrans.engineering.App;
 import net.suntrans.engineering.R;
 import net.suntrans.engineering.databinding.ActivityAutolinkBinding;
 import net.suntrans.engineering.utils.UiUtils;
+
+import java.io.Console;
 
 import io.fogcloud.sdk.easylink.api.EasyLink;
 import io.fogcloud.sdk.easylink.api.EasylinkP2P;
@@ -97,7 +100,7 @@ public class AutoLinkActivity extends BasedActivity {
         App.getSharedPreferences()
                 .edit()
                 .putString(ssid, password)
-                .commit();
+                .apply();
 
 //        easylinkP2P.startEasyLink(params, new EasyLinkCallBack() {
 //            @Override
@@ -169,6 +172,7 @@ public class AutoLinkActivity extends BasedActivity {
         @Override
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
+            System.out.println("action:"+action);
             if (action.equals(WifiManager.NETWORK_STATE_CHANGED_ACTION)) {
                 NetworkInfo info = intent.getParcelableExtra(WifiManager.EXTRA_NETWORK_INFO);
                 if (info.getDetailedState() == NetworkInfo.DetailedState.CONNECTED) {

@@ -12,6 +12,7 @@ public class TenDevice {
     public List<TenSwitchItem> datas = new ArrayList<>();
 
     TenDevice() {
+
         for (int i=0;i<=10;i++){
             TenSwitchItem item = new TenSwitchItem();
         }

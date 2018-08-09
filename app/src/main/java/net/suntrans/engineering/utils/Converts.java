@@ -238,7 +238,7 @@ public abstract class Converts {
             }
         }
         int uper = 0xffffffff & (CRCReg % 256);   //原高八位变为低八位  存在lower中
-        int lower = 0xffffffff & (CRCReg / 256);   //原低八位变为高八位  存在uper中
+        int lower = 0xffffffff & (CRCReg / 256);  //原低八位变为高八位  存在uper中
         //  CRCReg = (int)(uper * 256 + lower);            //得到将高八位与低八位互换的新的CRCReg
         String bh = Integer.toHexString(uper);         //获取高八位
         String bl = Integer.toHexString(lower);         //获取低八位
@@ -248,7 +248,12 @@ public abstract class Converts {
         return CRC;    //返回字符串形式的校验码
     }
 
-
+    private String getCrc(String order) {
+        byte[] bt = Converts.HexString2Bytes(order.replace(" ", ""));
+        order = order + Converts.GetCRC(bt, 2, bt.length) + "0d0a";
+        order = order.replace(" ", "");
+        return order;
+    }
     /***
      * 获取电表校验数据，返回类型为字符串，字符串长度为2
      * @param data 需要校验的字节数组
@@ -458,6 +463,7 @@ public abstract class Converts {
     //获取完整命令 包头+order+crc+包尾
     public static String getOrderWithCrc(String order) {
         order = order.replace(" ", "");
+        order= order.toLowerCase();
         byte[] bytes = Converts.HexString2Bytes(order);
         String crc = Converts.GetCRC(bytes, 0, bytes.length);
         order = "ab68" + order + crc + "0d0a";
